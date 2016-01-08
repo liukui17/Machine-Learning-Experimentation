@@ -70,7 +70,6 @@ public class RandomDecisionTree<A, L> extends DecisionTree<A, L> {
 					}
 				}
 			}
-			trainingSubset = null;
 		}
 	}
 }
