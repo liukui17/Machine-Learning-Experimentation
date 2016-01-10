@@ -8,6 +8,10 @@ import java.util.Map;
 
 import data.Instance;
 
+/**
+ * This is a subtype of the general DecisionTree. It uses an entropy-based
+ * measure (such as information gain) to greedily decide the splitting attribute.
+ */
 public class EntropyDecisionTree<A, L> extends DecisionTree<A, L> {
 
 	/** the root node of the decision tree */
@@ -45,7 +49,7 @@ public class EntropyDecisionTree<A, L> extends DecisionTree<A, L> {
 			super(trainingSubset);
 			if (trainingSubset != null && trainingSubset.size() != 0) {
 				entropy = computeSubsetEntropy(trainingSubset);
-
+				
 				prediction = findMajority(trainingSubset);
 
 				/*

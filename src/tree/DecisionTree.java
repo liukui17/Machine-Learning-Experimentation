@@ -11,10 +11,18 @@ import data.Instance;
 
 /**
  * A DecisionTree is a mutable object representing a decision tree learner. It
- * greedily splits on the locally optimal attribute (determined by some
- * function) at each node until there is no longer any benefit in doing so
- * (usually, this happens when all examples in the propagated subset have the
- * same label).
+ * splits at each node by dividing the examples propagated to it into subsets,
+ * each uniform in the value of a given attribute (the splitting attribute), which
+ * is determined by some process (subclasses must implement this).
+ * 
+ * NOTE: the following only builds some of the necessary framework needed for
+ * any decision tree learner but is certainly missing some necessary elements
+ * such as the root node of the tree (since decision nodes may vary by implementation
+ * of a decision tree learner, we leave this to the subclasses to implement); also,
+ * we largely ignore design issues such as whether or not inheritance is appropriate
+ * 
+ * NOTE2: this is a classifier although it can probably be reasonably easily adapted to
+ * do regression by thresholding values
  *
  * @param <A>
  *            the type of the attributes (NOTE: currently assumes that all
@@ -104,7 +112,9 @@ public abstract class DecisionTree<A, L> {
 
 	/**
 	 * A DecisionNode is a mutable object representing a single node in a
-	 * DecisionTree.
+	 * DecisionTree. As with a the containing decision tree class, this only
+	 * sets up some necessary infrastructure for all decision nodes but also
+	 * leaves out things such as pointers to children.
 	 */
 	abstract class DecisionNode {
 
@@ -119,17 +129,33 @@ public abstract class DecisionTree<A, L> {
 
 		/** the label that would be predicted at this node */
 		L prediction = null;
+		
+		/** 
+		 * ideally, here would be a Map<A, DecisionNode> representing children
+		 * nodes but since DecisionNodes must be subclassed, we can't place
+		 * subtypes of DecisionNode in here
+		 */
 
 		/**
 		 * Constructs a new DecisionNode. The DecisionTree is constructed
 		 * recursively by constructing children DecisionNodes at construction of
 		 * each DecisionNode.
 		 * 
+		 * NOTE: decision nodes do not store the training example subsets propagated
+		 * to them since it is largely a waste of memory (all we care about is the
+		 * classification, which can be computed at training time)
+		 * 
 		 * @param trainingSubset
 		 *            the subset of training examples propagated down to this
 		 *            node
 		 */
 		public DecisionNode(Map<L, List<Instance<A, L>>> trainingSubset) {
+			/*
+			 * There's not a whole lot a DecisionNode can do in terms of
+			 * construction since the other details are more specific to
+			 * the implementation (such as how the splitting attribute is
+			 * chosen and node types)
+			 */
 			this.trainingSubsetSize = getSubsetSize(trainingSubset);
 		}
 

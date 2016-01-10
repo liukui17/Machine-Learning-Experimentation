@@ -8,11 +8,18 @@ import java.util.Random;
 
 import data.Instance;
 
+/**
+ * This is a subclass of the general decision tree. It decides the
+ * splitting attribute by random selection, splitting until there
+ * is no longer any utility in splitting (for now, this is just
+ * when the propagated subsets becomes pure in their labels).
+ */
 public class RandomDecisionTree<A, L> extends DecisionTree<A, L> {
 
 	/** the root node of the decision tree */
 	DecisionNode root;
 
+	/** the random number generator used for deciding the splitting attribute */
 	Random random;
 
 	public RandomDecisionTree(List<Instance<A, L>> trainingExamples) {
