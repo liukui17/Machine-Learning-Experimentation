@@ -6,6 +6,10 @@ import bayes.NaiveBayesClassifier;
 import data.Instance;
 import data.MNISTParser;
 
+/**
+ * Trained on all 60000 examples, the naive Bayes learner gets 84.14%
+ * classification accuracy and takes around 30 seconds to train.
+ */
 public class TestNaiveBayes {
 	public static void main(String[] args) {
 		List<int[][]> trainingImages = MNISTParser.readImages(MNISTParser.TRAIN_IMAGES);
