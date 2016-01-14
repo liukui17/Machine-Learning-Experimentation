@@ -23,7 +23,12 @@ import data.Instance;
  * 
  * NOTE2: this is a classifier although it can probably be reasonably easily adapted to
  * do regression by thresholding values
- *
+ * 
+ * TODO: implement a chi-squared split stopping criterion and/or post-pruning
+ * to reduce overfitting (need statistical significance testing to give us
+ * confidence that our "improvements" are legitimate improvements and not due to
+ * noisy data)
+ * 
  * @param <A>
  *            the type of the attributes (NOTE: currently assumes that all
  *            attributes have the same type)
@@ -155,8 +160,8 @@ public abstract class DecisionTree<A, L> {
 	 */
 	public void printStats() {
 		System.out.println("\tNode Count: " + nodeCount +
-				   "\n\tLeaf Count: " + leafCount +
-				   "\n\tHeight: " + height);
+				   		   "\n\tLeaf Count: " + leafCount +
+				   		   "\n\tHeight: " + height);
 	}
 
 	/**

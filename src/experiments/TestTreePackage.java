@@ -21,8 +21,8 @@ import tree.*;
  * and takes around 75 minutes to train
  * 
  * RandomDecisionTree: with a RandomDecisionTree trained on 60000 examples, the
- * classifier gets around 75.67% classification accuracy and takes around
- * 500-600 milliseconds to train
+ * classifier gets around 74 (highest 75.44%) classification accuracy and takes
+ * around 500-700 milliseconds to train
  * 
  * ExtremelyRandomForest: with a committee of 60 RandomDecisionTrees, each
  * trained with 60000 training examples, the classifier gets around 95.75%
@@ -79,7 +79,8 @@ public class TestTreePackage {
 			System.out.println("Training...");
 			long startTime = System.currentTimeMillis();
 		//	DecisionTree<Integer,Integer> tree = new EntropyDecisionTree<Integer,Integer>(subTrainInstances);
-			DecisionTree<Integer,Integer> tree = new RandomEntropyDecisionTree<Integer,Integer>(subTrainInstances, 100);
+		//	DecisionTree<Integer,Integer> tree = new RandomEntropyDecisionTree<Integer,Integer>(subTrainInstances, 100);
+			DecisionTree<Integer,Integer> tree = new RandomDecisionTree<Integer,Integer>(subTrainInstances);
 		//	RandomForest<Integer, Integer> forest = new ExtremelyRandomForest<Integer, Integer>(subTrainInstances, 61);
 		//	RandomForest<Integer,Integer> forest = new EntropyRandomForest<Integer,Integer>(subTrainInstances, 40000, 101);
 			System.out.println("Training complete (" + (System.currentTimeMillis() - startTime) + " milliseconds)");

@@ -5,6 +5,9 @@ import java.util.List;
 import data.Instance;
 import data.Utils;
 
+/**
+ * This is a subclass of RandomForest. It builds a forest of RandomDecisionTrees.
+ */
 public class ExtremelyRandomForest<A, L> extends RandomForest<A, L> {
 
 	public ExtremelyRandomForest(List<Instance<A, L>> trainingExamples, int subsetSize, int committeeSize) {
