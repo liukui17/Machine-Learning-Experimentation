@@ -46,17 +46,19 @@ public abstract class RandomForest<A, L> {
 	List<DecisionTree<A, L>> committee;
 	
 	/** (variable names should make their purposes clear) */
-	int minNodeCount;
+	int minNodeCount = Integer.MAX_VALUE;
 	int avgNodeCount;
-	int maxNodeCount;
+	int maxNodeCount = Integer.MIN_VALUE;
 	
-	int minHeight;
+	int minHeight = Integer.MAX_VALUE;
 	int avgHeight;
-	int maxHeight;
+	int maxHeight = Integer.MIN_VALUE;
 	
-	int minLeafCount;
+	int minLeafCount = Integer.MAX_VALUE;
 	int avgLeafCount;
-	int maxLeafCount;
+	int maxLeafCount = Integer.MIN_VALUE;
+	
+	int totalNodeCount;
 
 	public RandomForest(List<Instance<A, L>> trainingExamples, int subsetSize, int committeeSize) {
 		committee = new ArrayList<DecisionTree<A, L>>(committeeSize);
@@ -109,7 +111,8 @@ public abstract class RandomForest<A, L> {
 		System.out.println("===== Node Counts =====");
 		System.out.println("\tSmallest: " + minNodeCount +
 						   "\n\tAverage: " + avgNodeCount +
-						   "\n\tLargest: " + maxNodeCount);
+						   "\n\tLargest: " + maxNodeCount + 
+						   "\n\tTotal: " + totalNodeCount);
 		System.out.println("===== Heights =====");
 		System.out.println("\tShortest: " + minHeight +
 						   "\n\tAverage: " + avgHeight +
@@ -118,5 +121,24 @@ public abstract class RandomForest<A, L> {
 		System.out.println("\tLeast: " + minLeafCount +
 						   "\n\tAverage: " + avgLeafCount +
 						   "\n\tMost: " + maxLeafCount);
+	}
+	
+	void updateStats(DecisionTree<A, L> tree) {
+		minNodeCount = Math.min(minNodeCount, tree.getNodeCount());
+		maxNodeCount = Math.max(maxNodeCount, tree.getNodeCount());
+		
+		minHeight = Math.min(minHeight, tree.getHeight());
+		maxHeight = Math.max(maxHeight, tree.getHeight());
+		
+		minLeafCount = Math.min(minLeafCount, tree.getLeafCount());
+		maxLeafCount = Math.max(maxLeafCount, tree.getLeafCount());
+		
+		totalNodeCount += tree.getNodeCount();
+	}
+	
+	void updateAverages(int totalHeights, int totalLeaves) {
+		avgNodeCount = totalNodeCount / committee.size();
+		avgHeight = totalHeights / committee.size();
+		avgLeafCount = totalLeaves / committee.size();
 	}
 }
