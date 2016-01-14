@@ -21,7 +21,7 @@ import tree.*;
  * and takes around 75 minutes to train
  * 
  * RandomDecisionTree: with a RandomDecisionTree trained on 60000 examples, the
- * classifier gets around 74 (highest 75.44%) classification accuracy and takes
+ * classifier gets around 74 (highest 75.61%) classification accuracy and takes
  * around 500-700 milliseconds to train
  * 
  * ExtremelyRandomForest: with a committee of 60 RandomDecisionTrees, each

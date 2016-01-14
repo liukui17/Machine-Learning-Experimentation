@@ -19,7 +19,7 @@ public class EntropyDecisionTree<A, L> extends DecisionTree<A, L> {
 
 	public EntropyDecisionTree(List<Instance<A, L>> trainingExamples) {
 		super(trainingExamples);
-		root = new DecisionNode(this.trainingExamples, 0);
+		root = new DecisionNode(this.trainingExamples, -1);
 	}
 
 	@Override
@@ -73,6 +73,13 @@ public class EntropyDecisionTree<A, L> extends DecisionTree<A, L> {
 					}
 				}
 				
+				/*
+				 * If children == null, then this node is a leaf so
+				 * increment the leafCount. Further, since it is a
+				 * leaf node, we've maximized the length of this path.
+				 * Hence, we can consider updating the tree height
+				 * using the depth at this node.
+				 */
 				if (children == null) {
 					leafCount++;
 					if (depth > height) {

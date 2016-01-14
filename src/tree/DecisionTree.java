@@ -53,7 +53,10 @@ public abstract class DecisionTree<A, L> {
 	/** the number of nodes in the decision tree */
 	int nodeCount;
 	
-	/** the height of the decision tree */
+	/** 
+	 * this holds the height of the decision tree, defined to be
+	 * the longest path from the root to any of its leaves
+	 */
 	int height;
 	
 	/** the number of leaves in the decision tree */
