@@ -4,7 +4,6 @@ import java.util.List;
 
 import data.Instance;
 import data.MNISTParser;
-import data.SD19Reader;
 import data.Utils;
 import decision_tree.*;
 

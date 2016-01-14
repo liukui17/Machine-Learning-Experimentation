@@ -81,8 +81,16 @@ public class MNISTParser {
 	
 	public static Instance<Integer,Integer> makeInstance(int[][] image, int label) {
 		List<Integer> attributes = new ArrayList<Integer>(image.length * image[0].length);
-		for (int i = 0; i < image.length; i++) {
-			for (int j = 0; j < image[i].length; j++) {
+		
+		/*
+		 * There isn't much need to include the elements along the border since
+		 * in almost all images, those pixels are 0. Of course, we can only do
+		 * this because we know something about the data. In general, it isn't
+		 * a good idea to remove features because some might actually be very
+		 * influential in determining the classification.
+		 */
+		for (int i = 1; i < image.length - 1; i++) {
+			for (int j = 1; j < image[i].length - 1; j++) {
 				if (image[i][j] != 0) {
 					attributes.add(1);
 				} else {

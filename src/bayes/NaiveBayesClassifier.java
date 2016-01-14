@@ -8,6 +8,10 @@ import java.util.Map;
 
 import data.Instance;
 
+/**
+ * TODO: currently, this is very space inefficient, even though
+ * it is pretty quick when predicting; optimize more!
+ */
 public class NaiveBayesClassifier<A, L> {
 
 	Map<L, List<Map<A, List<Instance<A, L>>>>> trainingExamples;

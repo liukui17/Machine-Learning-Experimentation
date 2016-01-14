@@ -9,7 +9,21 @@ import java.util.Set;
 import data.Instance;
 
 public abstract class RandomForest<A, L> {
+	
 	List<DecisionTree<A, L>> committee;
+	
+	/** (variable names make their purposes clear) */
+	int minNodeCount;
+	int avgNodeCount;
+	int maxNodeCount;
+	
+	int minHeight;
+	int avgHeight;
+	int maxHeight;
+	
+	int minLeafCount;
+	int avgLeafCount;
+	int maxLeafCount;
 
 	public RandomForest(List<Instance<A, L>> trainingExamples, int subsetSize, int committeeSize) {
 		committee = new ArrayList<DecisionTree<A, L>>(committeeSize);
@@ -44,5 +58,32 @@ public abstract class RandomForest<A, L> {
 			}
 		}
 		return mode;
+	}
+	
+	public int getMinNodeCount() { return minNodeCount; }
+	public int getAvgNodeCount() { return avgNodeCount; }
+	public int getMaxNodeCount() { return maxNodeCount; }
+	
+	public int getMinHeight() { return minHeight; }
+	public int getAvgHeight() { return avgHeight; }
+	public int getMaxHeight() { return maxHeight; }
+	
+	public int getMinLeafCount() { return minLeafCount; }
+	public int getAvgLeafCount() { return avgLeafCount; }
+	public int getMaxLeafCount() { return maxLeafCount; }
+	
+	public void printStats() {
+		System.out.println("===== Node Counts =====");
+		System.out.println("\tSmallest: " + minNodeCount +
+						   "\n\tAverage: " + avgNodeCount +
+						   "\n\tLargest: " + maxNodeCount);
+		System.out.println("===== Heights =====");
+		System.out.println("\tShortest: " + minHeight +
+						   "\n\tAverage: " + avgHeight +
+						   "\n\tTallest: " + maxHeight);
+		System.out.println("==== Leaf Counts =====");
+		System.out.println("\tLeast: " + minLeafCount +
+						   "\n\tAverage: " + avgLeafCount +
+						   "\n\tMost: " + maxLeafCount);
 	}
 }

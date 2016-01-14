@@ -19,7 +19,7 @@ public class EntropyDecisionTree<A, L> extends DecisionTree<A, L> {
 
 	public EntropyDecisionTree(List<Instance<A, L>> trainingExamples) {
 		super(trainingExamples);
-		root = new DecisionNode(this.trainingExamples);
+		root = new DecisionNode(this.trainingExamples, 0);
 	}
 
 	@Override
@@ -45,8 +45,8 @@ public class EntropyDecisionTree<A, L> extends DecisionTree<A, L> {
 		 */
 		Map<A, DecisionNode> children = null;
 
-		public DecisionNode(Map<L, List<Instance<A, L>>> trainingSubset) {
-			super(trainingSubset);
+		public DecisionNode(Map<L, List<Instance<A, L>>> trainingSubset, int parentDepth) {
+			super(trainingSubset, parentDepth);
 			if (trainingSubset != null && trainingSubset.size() != 0) {
 				entropy = computeSubsetEntropy(trainingSubset);
 				
@@ -68,8 +68,15 @@ public class EntropyDecisionTree<A, L> extends DecisionTree<A, L> {
 						while (iter.hasNext()) {
 							A next = iter.next();
 							Map<L, List<Instance<A, L>>> nextSubset = partitionedSubsets.get(next);
-							children.put(next, new DecisionNode(nextSubset));
+							children.put(next, new DecisionNode(nextSubset, depth));
 						}
+					}
+				}
+				
+				if (children == null) {
+					leafCount++;
+					if (depth > height) {
+						height = depth;
 					}
 				}
 			}
@@ -122,7 +129,34 @@ public class EntropyDecisionTree<A, L> extends DecisionTree<A, L> {
 		 * @return the gain ratio of the attribute
 		 */
 		public double computeGainRatio(Map<A, Map<L, List<Instance<A, L>>>> subsetsMap) {
-			return computeInformationGain(subsetsMap) / computeSplitInformation(subsetsMap);
+			double entropySum = 0.0;
+			double splitInfo = 0.0;
+			Collection<Map<L, List<Instance<A, L>>>> subsets = subsetsMap.values();
+			for (Map<L, List<Instance<A, L>>> map : subsets) {
+				double subsetSize = getSubsetSize(map);
+				entropySum += (computeSubsetEntropy(map) * subsetSize);
+				splitInfo -= (subsetSize / trainingSubsetSize) * Math.log(subsetSize / trainingSubsetSize);
+			}
+			if (splitInfo != 0.0) {
+				return (entropy - (entropySum / trainingSubsetSize)) / splitInfo;
+			} else {
+				return 0.0;
+			}
+			
+			/*
+			 * Although this makes the code more readable, reduces redundancy and has
+			 * better style in general, it is (much) less efficient because it reloops
+			 * over the subsets of the map. While this shouldn't cost much on attributes
+			 * with few values, we are still doing this second loop on every attribute
+			 * at every node.
+			 */
+		/*	double gain = computeInformationGain(subsetsMap);
+			double splitInfo = computeSplitInformation(subsetsMap);
+			if (splitInfo == 0.0) {
+				return 0.0;
+			} else {
+				return gain / splitInfo;
+			} */
 		}
 
 		/**
@@ -144,7 +178,7 @@ public class EntropyDecisionTree<A, L> extends DecisionTree<A, L> {
 				 * the one that yields the highest gain ratio.
 				 */
 				double nextGain = computeInformationGain(subsetsMap);
-				// double nextGain = computeGainRatio(subsetsMap);
+			//	double nextGain = computeGainRatio(subsetsMap);
 
 				if (nextGain > currentGain) {
 					currentGain = nextGain;

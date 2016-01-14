@@ -78,17 +78,19 @@ public class TestTreePackage {
 
 			System.out.println("Training...");
 			long startTime = System.currentTimeMillis();
-			// DecisionTree<Integer,Integer> tree = new EntropyDecisionTree<Integer,Integer>(subTrainInstances);
-			RandomForest<Integer, Integer> forest = new ExtremelyRandomForest<Integer, Integer>(subTrainInstances, 61);
-			// RandomForest<Integer,Integer> forest = new EntropyRandomForest<Integer,Integer>(subTrainInstances, 40000, 101);
+		//	DecisionTree<Integer,Integer> tree = new EntropyDecisionTree<Integer,Integer>(subTrainInstances);
+			DecisionTree<Integer,Integer> tree = new RandomEntropyDecisionTree<Integer,Integer>(subTrainInstances, 100);
+		//	RandomForest<Integer, Integer> forest = new ExtremelyRandomForest<Integer, Integer>(subTrainInstances, 61);
+		//	RandomForest<Integer,Integer> forest = new EntropyRandomForest<Integer,Integer>(subTrainInstances, 40000, 101);
 			System.out.println("Training complete (" + (System.currentTimeMillis() - startTime) + " milliseconds)");
+			tree.printStats();
+		//	forest.printStats();
 
 			int correct = 0;
 			for (int i = 0; i < testInstances.size(); i++) {
 				Instance<Integer, Integer> nextInstance = testInstances.get(i);
-				// int predicted =
-				// tree.predict(nextInstance.getAttributeValues());
-				int predicted = forest.predict(nextInstance.getAttributeValues());
+				int predicted = tree.predict(nextInstance.getAttributeValues());
+			//	int predicted = forest.predict(nextInstance.getAttributeValues());
 				int actual = nextInstance.getLabel();
 				if (predicted == actual) {
 					correct++;

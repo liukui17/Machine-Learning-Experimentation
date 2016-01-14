@@ -44,6 +44,15 @@ public abstract class DecisionTree<A, L> {
 
 	/** the number of training examples used to train this decision tree */
 	int trainingDataSize;
+	
+	/** the number of nodes in the decision tree */
+	int nodeCount;
+	
+	/** the height of the decision tree */
+	int height;
+	
+	/** the number of leaves in the decision tree */
+	int leafCount;
 
 	/**
 	 * Constructs a new decision tree classifier.
@@ -77,6 +86,10 @@ public abstract class DecisionTree<A, L> {
 				this.trainingExamples.put(nextLabel, newSubSubset);
 			}
 		}
+		
+		nodeCount = 0;
+		height = 0;
+		leafCount = 0;
 	}
 
 	/**
@@ -109,6 +122,42 @@ public abstract class DecisionTree<A, L> {
 	public int getTrainingDataSize() {
 		return trainingDataSize;
 	}
+	
+	/**
+	 * Gets the number of nodes in the decision tree.
+	 * 
+	 * @return the number of nodes in the decision tree
+	 */
+	public int getNodeCount() {
+		return nodeCount;
+	}
+	
+	/**
+	 * Gets the height of the decision tree.
+	 * 
+	 * @return the height of the decision tree
+	 */
+	public int getHeight() {
+		return height;
+	}
+	
+	/**
+	 * Gets the number of leaves in the decision tree.
+	 * 
+	 * @return the number of leaves in the decision tree
+	 */
+	public int getLeafCount() {
+		return leafCount;
+	}
+	
+	/**
+	 * Prints some statistics about this tree.
+	 */
+	public void printStats() {
+		System.out.println("\tNode Count: " + nodeCount +
+				   "\n\tLeaf Count: " + leafCount +
+				   "\n\tHeight: " + height);
+	}
 
 	/**
 	 * A DecisionNode is a mutable object representing a single node in a
@@ -130,6 +179,9 @@ public abstract class DecisionTree<A, L> {
 		/** the label that would be predicted at this node */
 		L prediction = null;
 		
+		/** the depth of this node */
+		int depth;
+		
 		/** 
 		 * ideally, here would be a Map<A, DecisionNode> representing children
 		 * nodes but since DecisionNodes must be subclassed, we can't place
@@ -149,7 +201,7 @@ public abstract class DecisionTree<A, L> {
 		 *            the subset of training examples propagated down to this
 		 *            node
 		 */
-		public DecisionNode(Map<L, List<Instance<A, L>>> trainingSubset) {
+		public DecisionNode(Map<L, List<Instance<A, L>>> trainingSubset, int parentDepth) {
 			/*
 			 * There's not a whole lot a DecisionNode can do in terms of
 			 * construction since the other details are more specific to
@@ -157,6 +209,8 @@ public abstract class DecisionTree<A, L> {
 			 * chosen and node types)
 			 */
 			this.trainingSubsetSize = getSubsetSize(trainingSubset);
+			nodeCount++;
+			depth = parentDepth + 1;
 		}
 
 		/**
@@ -250,6 +304,15 @@ public abstract class DecisionTree<A, L> {
 				}
 			}
 			return majority;
+		}
+		
+		/**
+		 * Gets the depth of this node.
+		 * 
+		 * @return the depth of this node
+		 */
+		public int getDepth() {
+			return depth;
 		}
 	}
 }

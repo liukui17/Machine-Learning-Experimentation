@@ -25,7 +25,7 @@ public class RandomDecisionTree<A, L> extends DecisionTree<A, L> {
 	public RandomDecisionTree(List<Instance<A, L>> trainingExamples) {
 		super(trainingExamples);
 		random = new Random();
-		root = new DecisionNode(this.trainingExamples);
+		root = new DecisionNode(this.trainingExamples, 0);
 	}
 
 	@Override
@@ -51,8 +51,8 @@ public class RandomDecisionTree<A, L> extends DecisionTree<A, L> {
 		 */
 		Map<A, DecisionNode> children = null;
 
-		public DecisionNode(Map<L, List<Instance<A, L>>> trainingSubset) {
-			super(trainingSubset);
+		public DecisionNode(Map<L, List<Instance<A, L>>> trainingSubset, int parentDepth) {
+			super(trainingSubset, parentDepth);
 			if (trainingSubset != null && trainingSubset.size() != 0) {
 				entropy = computeSubsetEntropy(trainingSubset);
 
@@ -73,7 +73,14 @@ public class RandomDecisionTree<A, L> extends DecisionTree<A, L> {
 					while (iter.hasNext()) {
 						A next = iter.next();
 						Map<L, List<Instance<A, L>>> nextSubset = partitionedSubsets.get(next);
-						children.put(next, new DecisionNode(nextSubset));
+						children.put(next, new DecisionNode(nextSubset, depth));
+					}
+				}
+				
+				if (children == null) {
+					leafCount++;
+					if (depth > height) {
+						height = depth;
 					}
 				}
 			}
