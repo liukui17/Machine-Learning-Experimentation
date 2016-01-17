@@ -26,8 +26,8 @@ public class TestBinaryPerceptronBoolean {
 	public static void main(String[] args) {
 		for (int j = 0; j < TRIALS; j++) {
 			System.out.println("===== TEST " + j + " =====");
-			List<Instance<Double, Boolean>> trainInstances = Utils.DoubleAttributeBooleanInstances(TRAIN_SIZE, DIMENSIONS, BOOLEAN_FUNCTION);
-			List<Instance<Double, Boolean>> testInstances = Utils.DoubleAttributeBooleanInstances(TEST_SIZE, DIMENSIONS, BOOLEAN_FUNCTION);
+			List<Instance<Integer, Boolean>> trainInstances = Utils.IntegerAttributeBooleanInstances(TRAIN_SIZE, DIMENSIONS, BOOLEAN_FUNCTION);
+			List<Instance<Integer, Boolean>> testInstances = Utils.IntegerAttributeBooleanInstances(TEST_SIZE, DIMENSIONS, BOOLEAN_FUNCTION);
 			
 		/*	for (int i = 0; i < trainInstances.size(); i++) {
 				System.out.println(trainInstances.get(i));
@@ -39,6 +39,8 @@ public class TestBinaryPerceptronBoolean {
 			long start = System.currentTimeMillis();
 			BinaryPerceptron classifier = new BinaryPerceptron(trainInstances, 0);
 			System.out.println("Training complete (" + (System.currentTimeMillis() - start) + " milliseconds)");
+			System.out.println("Trained in " + classifier.getTrainingStepCount() + " steps and achieved " +
+						(1 - classifier.getTrainingError()) + " accuracy on training data.");
 	
 			int correct = 0;
 			for (int i = 0; i < testInstances.size(); i++) {

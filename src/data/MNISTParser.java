@@ -80,6 +80,29 @@ public class MNISTParser {
 	}
 	
 	public static Instance<Integer,Integer> makeInstance(int[][] image, int label) {
+		List<Integer> attributes = generateAttributeVector(image);
+		return new Instance<Integer,Integer>(attributes, label);
+	}
+	
+	public static List<Instance<Integer, Boolean>> makeOneVSAllInstances(List<int[][]> images, int[] labels,
+			int start, int limit, int oddOneOut) {
+		List<Instance<Integer, Boolean>> instances = new ArrayList<Instance<Integer, Boolean>>(limit);
+		Iterator<int[][]> iter = images.iterator();
+		int i = start;
+		while (iter.hasNext() && i < limit + start && i < images.size()) {
+			int[][] nextImage = iter.next();
+			instances.add(makeOneVSAllInstance(nextImage, labels[i], oddOneOut));
+			i++;
+		}
+		return instances;
+	}
+	
+	public static Instance<Integer, Boolean> makeOneVSAllInstance(int[][] image, int label, int oddOneOut) {
+		List<Integer> attributes = generateAttributeVector(image);
+		return new Instance<Integer, Boolean>(attributes, label == oddOneOut);
+	}
+	
+	private static List<Integer> generateAttributeVector(int[][] image) {
 		List<Integer> attributes = new ArrayList<Integer>(image.length * image[0].length);
 		
 		/*
@@ -99,7 +122,7 @@ public class MNISTParser {
 			//	attributes.add(image[i][j]);
 			}
 		}
-		return new Instance<Integer,Integer>(attributes, label);
+		return attributes;
 	}
 	
 	public static List<NumericalInstance<Integer>> makeNumericalInstances(List<int[][]> images, int[] labels, int start, int limit) {

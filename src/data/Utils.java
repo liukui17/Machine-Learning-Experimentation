@@ -16,16 +16,16 @@ public class Utils {
 		return subset;
 	}
 	
-	public static List<Instance<Double, Boolean>> DoubleAttributeBooleanInstances(int size, int dimensions, int booleanFunction) {
+	public static List<Instance<Integer, Boolean>> IntegerAttributeBooleanInstances(int size, int dimensions, int booleanFunction) {
 		Random random = new Random();
-		List<Instance<Double, Boolean>> instances = new ArrayList<Instance<Double, Boolean>>(size);
+		List<Instance<Integer, Boolean>> instances = new ArrayList<Instance<Integer, Boolean>>(size);
 		for (int i = 0; i < size; i++) {
-			List<Double> nextAttributes = new ArrayList<Double>();
+			List<Integer> nextAttributes = new ArrayList<Integer>();
 			boolean res = random.nextBoolean();
 			if (res) {
-				nextAttributes.add(1.0);
+				nextAttributes.add(1);
 			} else {
-				nextAttributes.add(-1.0);
+				nextAttributes.add(-1);
 			}
 			for (int j = 1; j < dimensions; j++) {
 				boolean next = random.nextBoolean();
@@ -42,12 +42,12 @@ public class Utils {
 				}
 				
 				if (next) {
-					nextAttributes.add(1.0);
+					nextAttributes.add(1);
 				} else {
-					nextAttributes.add(-1.0);
+					nextAttributes.add(-1);
 				}
 			}
-			instances.add(new Instance<Double, Boolean>(nextAttributes, res));
+			instances.add(new Instance<Integer, Boolean>(nextAttributes, res));
 		}
 		return instances;
 	}

@@ -7,30 +7,29 @@ import data.Instance;
 
 public class BinaryPerceptron {
 	
-	static final int LEARNING_RATE_DECAY = 5;
+	static final double LEARNING_RATE_DECAY = 0.99;
 	
-//	double errorOnTrainingData;
+	double errorOnTrainingData;
 	
 	int steps;
 	
-	double learningRate;
+	double learningRate = 0.1;
 	
 	double[] weights;
 	
-	List<Instance<Double, Boolean>> trainingExamples;
+	List<Instance<Integer, Boolean>> trainingExamples;
 	
-	public BinaryPerceptron(List<Instance<Double, Boolean>> trainingExamples, int threshold) {
+	public BinaryPerceptron(List<Instance<Integer, Boolean>> trainingExamples, int threshold) {
 		setUp(trainingExamples);
 		steps = 0;
 		train(threshold);
 	}
 	
-	private void setUp(List<Instance<Double, Boolean>> trainingExamples) {
+	private void setUp(List<Instance<Integer, Boolean>> trainingExamples) {
 		this.trainingExamples = trainingExamples;
 		weights = new double[trainingExamples.get(0).getDimensionality() + 1];
-	//	errorOnTrainingData = 0;
+		errorOnTrainingData = 0;
 		initializeRandomWeights();
-		learningRate = 0.1;
 	}
 	
 	public void initializeRandomWeights() {
@@ -44,7 +43,7 @@ public class BinaryPerceptron {
 		}
 	}
 	
-	public Boolean predict(List<Double> data) {
+	public Boolean predict(List<Integer> data) {
 		double res = computeLinearOutput(data);
 		if (res > 0.0) {
 			return true;
@@ -53,7 +52,7 @@ public class BinaryPerceptron {
 		}
 	}
 	
-	private double computeLinearOutput(List<Double> data) {
+	private double computeLinearOutput(List<Integer> data) {
 		double res = weights[0];
 		for (int i = 0; i < data.size(); i++) {
 			res += weights[i + 1] * data.get(i);
@@ -64,21 +63,22 @@ public class BinaryPerceptron {
 /*	public void train() {
 		for (int i = 0; i < steps; i++) {
 			subsetGradientDescentUpdate(trainingExamples);
-			learningRate -= learningRate / LEARNING_RATE_DECAY;
+			learningRate *= LEARNING_RATE_DECAY;
 		}
 	} */
 	
 	public void train(int threshold) {
-		while (getErrorCountOnTrainingData() > threshold) {
+		while (getErrorCountOnTrainingData() > threshold && learningRate > 0.000001) {
 			subsetGradientDescentUpdate(trainingExamples);
-			learningRate -= learningRate / LEARNING_RATE_DECAY;
+			learningRate *= LEARNING_RATE_DECAY;
 			steps++;
 		}
+		errorOnTrainingData = ((double) getErrorCountOnTrainingData()) / trainingExamples.size();
 	}
 	
 	private int getErrorCountOnTrainingData() {
 		int count = 0;
-		for (Instance<Double, Boolean> instance : trainingExamples) {
+		for (Instance<Integer, Boolean> instance : trainingExamples) {
 			if (predict(instance.getAttributeValues()) != instance.getLabel()) {
 				count++;
 			}
@@ -86,9 +86,9 @@ public class BinaryPerceptron {
 		return count;
 	}
 	
-	private void subsetGradientDescentUpdate(List<Instance<Double, Boolean>> subset) {
+	private void subsetGradientDescentUpdate(List<Instance<Integer, Boolean>> subset) {
 		double[] updates = new double[weights.length];
-		for (Instance<Double, Boolean> instance : subset) {
+		for (Instance<Integer, Boolean> instance : subset) {
 			double expected = 1.0;
 			if (!instance.getLabel()) {
 				expected = -1.0;
@@ -114,5 +114,13 @@ public class BinaryPerceptron {
 			System.out.print(", " + weights[i]);
 		}
 		System.out.println("]");
+	}
+	
+	public double getTrainingError() {
+		return errorOnTrainingData;
+	}
+	
+	public int getTrainingStepCount() {
+		return steps;
 	}
 }
