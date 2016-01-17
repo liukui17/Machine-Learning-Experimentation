@@ -24,12 +24,12 @@ import tree.*;
  * classifier gets around 74 (highest 75.61%) classification accuracy and takes
  * around 500-700 milliseconds to train
  * 
- * ExtraRandomForest: with an ExtraRandomForest trained on 60000 examples (40000
+ * ExtraRandomForest: with an ExtraRandomForest trained on 60000 examples (60000
  * for each RandomEntropyDecisionTree in its committee) with a committee size of
- * 101 and using the default nomination ratio (randomly select 1/10 of the number
- * of total attributes to consider when greedily splitting), on first attempt, it
- * got 97.03% classification accuracy and took around 500 seconds to train. It seems
- * to average around 96-97% classification accuracy.
+ * 101 and using the default nomination ratio (randomly select 1/25 of the number
+ * of total attributes to consider when greedily splitting), got 97.28% classification
+ * accuracy and took around 400 seconds to train. It seems to average around 97%
+ * classification accuracy.
  * 
  * ExtremelyRandomForest: with a committee of 60 RandomDecisionTrees, each
  * trained with 60000 training examples, the classifier gets around 95.75%
@@ -79,7 +79,7 @@ public class TestTreePackage {
 
 		int trainSubsetSize = trainInstances.size();
 
-		for (int j = 0; j < 1; j++) {
+		for (int j = 0; j < 10; j++) {
 			System.out.println("===== TEST " + j + " =====");
 			List<Instance<Integer, Integer>> subTrainInstances = Utils.makeSubset(trainInstances, trainSubsetSize);
 
@@ -90,7 +90,7 @@ public class TestTreePackage {
 		//	DecisionTree<Integer, Integer> tree = new RandomDecisionTree<Integer, Integer>(subTrainInstances);
 		//	RandomForest<Integer, Integer> forest = new ExtremelyRandomForest<Integer, Integer>(subTrainInstances, 61);
 		//	RandomForest<Integer, Integer> forest = new EntropyRandomForest<Integer, Integer>(subTrainInstances, 40000, 101);
-			RandomForest<Integer, Integer> forest = new ExtraRandomForest<Integer, Integer>(subTrainInstances, 40000, 101);
+			RandomForest<Integer, Integer> forest = new ExtraRandomForest<Integer, Integer>(subTrainInstances, 60000, 101);
 			System.out.println("Training complete (" + (System.currentTimeMillis() - startTime) + " milliseconds)");
 		//	tree.printStats();
 			forest.printStats();
