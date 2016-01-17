@@ -6,6 +6,8 @@ import data.Instance;
 import data.Utils;
 
 public class EntropyRandomForest<A, L> extends RandomForest<A, L> {
+	
+	public static final int DEFAULT_SUBSET_RATIO = 2;
 
 	public EntropyRandomForest(List<Instance<A, L>> trainingExamples, int subsetSize, int committeeSize) {
 		super(trainingExamples, subsetSize, committeeSize);
@@ -39,5 +41,9 @@ public class EntropyRandomForest<A, L> extends RandomForest<A, L> {
 		}
 		
 		updateAverages(totalHeights, totalLeaves);
+	}
+	
+	public EntropyRandomForest(List<Instance<A, L>> trainingExamples, int committeeSize) {
+		this(trainingExamples, trainingExamples.size() / DEFAULT_SUBSET_RATIO, committeeSize);
 	}
 }

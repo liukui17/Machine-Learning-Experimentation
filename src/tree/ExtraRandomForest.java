@@ -7,7 +7,9 @@ import data.Utils;
 
 public class ExtraRandomForest<A, L> extends RandomForest<A, L> {
 	
-	public static final int DEFAULT_NOMINATION_RATIO = 10;
+	public static final int DEFAULT_NOMINATION_RATIO = 25;
+	
+	public static final int DEFAULT_SUBSET_RATIO = 2;
 	
 	public ExtraRandomForest(List<Instance<A, L>> trainingExamples, int subsetSize, int committeeSize) {
 		super(trainingExamples, subsetSize, committeeSize);
@@ -49,6 +51,6 @@ public class ExtraRandomForest<A, L> extends RandomForest<A, L> {
 	}
 
 	public ExtraRandomForest(List<Instance<A, L>> trainingExamples, int committeeSize) {
-		this(trainingExamples, trainingExamples.size(), committeeSize);
+		this(trainingExamples, trainingExamples.size() / DEFAULT_SUBSET_RATIO, committeeSize);
 	}
 }

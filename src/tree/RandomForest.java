@@ -117,7 +117,7 @@ public abstract class RandomForest<A, L> {
 		System.out.println("\tShortest: " + minHeight +
 						   "\n\tAverage: " + avgHeight +
 						   "\n\tTallest: " + maxHeight);
-		System.out.println("==== Leaf Counts =====");
+		System.out.println("===== Leaf Counts =====");
 		System.out.println("\tLeast: " + minLeafCount +
 						   "\n\tAverage: " + avgLeafCount +
 						   "\n\tMost: " + maxLeafCount);
