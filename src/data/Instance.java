@@ -41,4 +41,8 @@ public class Instance<A,L> {
 	public L getLabel() {
 		return label;
 	}
+	
+	public String toString() {
+		return "{" + attributeValues.toString() + ", " + label.toString() + "}";
+	}
 }
