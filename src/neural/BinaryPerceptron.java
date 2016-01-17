@@ -7,7 +7,7 @@ import data.Instance;
 
 public class BinaryPerceptron {
 	
-	static final int LEARNING_RATE_DECAY = 4;
+	static final int LEARNING_RATE_DECAY = 5;
 	
 //	double errorOnTrainingData;
 	
@@ -18,15 +18,15 @@ public class BinaryPerceptron {
 	double[] weights;
 	
 	List<Instance<Double, Boolean>> trainingExamples;
-
-	public BinaryPerceptron(List<Instance<Double, Boolean>> trainingExamples, int steps) {
-		setUp(trainingExamples, steps);
-		train();
+	
+	public BinaryPerceptron(List<Instance<Double, Boolean>> trainingExamples, int threshold) {
+		setUp(trainingExamples);
+		steps = 0;
+		train(threshold);
 	}
 	
-	private void setUp(List<Instance<Double, Boolean>> trainingExamples, int steps) {
+	private void setUp(List<Instance<Double, Boolean>> trainingExamples) {
 		this.trainingExamples = trainingExamples;
-		this.steps = steps;
 		weights = new double[trainingExamples.get(0).getDimensionality() + 1];
 	//	errorOnTrainingData = 0;
 		initializeRandomWeights();
@@ -61,11 +61,29 @@ public class BinaryPerceptron {
 		return res;
 	}
 	
-	public void train() {
+/*	public void train() {
 		for (int i = 0; i < steps; i++) {
 			subsetGradientDescentUpdate(trainingExamples);
 			learningRate -= learningRate / LEARNING_RATE_DECAY;
 		}
+	} */
+	
+	public void train(int threshold) {
+		while (getErrorCountOnTrainingData() > threshold) {
+			subsetGradientDescentUpdate(trainingExamples);
+			learningRate -= learningRate / LEARNING_RATE_DECAY;
+			steps++;
+		}
+	}
+	
+	private int getErrorCountOnTrainingData() {
+		int count = 0;
+		for (Instance<Double, Boolean> instance : trainingExamples) {
+			if (predict(instance.getAttributeValues()) != instance.getLabel()) {
+				count++;
+			}
+		}
+		return count;
 	}
 	
 	private void subsetGradientDescentUpdate(List<Instance<Double, Boolean>> subset) {
@@ -82,7 +100,7 @@ public class BinaryPerceptron {
 			}
 			updates[0] += learningRate * (expected - res);
 			for (int i = 0; i < instance.getDimensionality(); i++) {
-				updates[i + 1] += learningRate * (expected - res) * instance.getAttributeValue(i);
+				updates[i + 1] += (learningRate * (expected - res) * instance.getAttributeValue(i));
 			}
 		}
 		for (int i = 0; i < weights.length; i++) {
@@ -95,6 +113,6 @@ public class BinaryPerceptron {
 		for (int i = 1; i < weights.length; i++) {
 			System.out.print(", " + weights[i]);
 		}
-		System.out.println();
+		System.out.println("]");
 	}
 }

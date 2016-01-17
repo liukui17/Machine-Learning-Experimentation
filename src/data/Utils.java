@@ -21,8 +21,13 @@ public class Utils {
 		List<Instance<Double, Boolean>> instances = new ArrayList<Instance<Double, Boolean>>(size);
 		for (int i = 0; i < size; i++) {
 			List<Double> nextAttributes = new ArrayList<Double>();
-			boolean res = true;
-			for (int j = 0; j < dimensions; j++) {
+			boolean res = random.nextBoolean();
+			if (res) {
+				nextAttributes.add(1.0);
+			} else {
+				nextAttributes.add(-1.0);
+			}
+			for (int j = 1; j < dimensions; j++) {
 				boolean next = random.nextBoolean();
 				
 				switch(booleanFunction) {
@@ -39,7 +44,7 @@ public class Utils {
 				if (next) {
 					nextAttributes.add(1.0);
 				} else {
-					nextAttributes.add(0.0);
+					nextAttributes.add(-1.0);
 				}
 			}
 			instances.add(new Instance<Double, Boolean>(nextAttributes, res));
@@ -52,8 +57,9 @@ public class Utils {
 		List<Instance<Boolean, Boolean>> instances = new ArrayList<Instance<Boolean, Boolean>>(size);
 		for (int i = 0; i < size; i++) {
 			List<Boolean> nextAttributes = new ArrayList<Boolean>();
-			boolean res = true;
-			for (int j = 0; j < dimensions; j++) {
+			boolean res = random.nextBoolean();
+			nextAttributes.add(res);
+			for (int j = 1; j < dimensions; j++) {
 				boolean next = random.nextBoolean();
 				
 				switch(booleanFunction) {
