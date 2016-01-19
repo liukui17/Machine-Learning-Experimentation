@@ -125,7 +125,7 @@ public class MNISTParser {
 		return attributes;
 	}
 	
-	public static List<NumericalInstance<Integer>> makeNumericalInstances(List<int[][]> images, int[] labels, int start, int limit) {
+/*	public static List<NumericalInstance<Integer>> makeNumericalInstances(List<int[][]> images, int[] labels, int start, int limit) {
 		List<NumericalInstance<Integer>> instances = new ArrayList<NumericalInstance<Integer>>(limit);
 		Iterator<int[][]> iter = images.iterator();
 		int i = start;
@@ -149,5 +149,5 @@ public class MNISTParser {
 			}
 		}
 		return new NumericalInstance<Integer>(attributes, label);
-	}
+	} */
 }
