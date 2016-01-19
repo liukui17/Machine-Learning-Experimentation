@@ -17,17 +17,19 @@ import neural.BinaryPerceptron;
  */
 public class TestBinaryPerceptronBoolean {
 	static final Random RANDOM = new Random();
-	static final int TRIALS = 10;
-	static final int DIMENSIONS = 3;
-	static final int TRAIN_SIZE = 32;
+	static final int TRIALS = 5;
+	static final int DIMENSIONS = 12;
+	static final int TRAIN_SIZE = 128;
 	static final int TEST_SIZE = 32;
 	static final int BOOLEAN_FUNCTION = 0;
 
 	public static void main(String[] args) {
 		for (int j = 0; j < TRIALS; j++) {
 			System.out.println("===== TEST " + j + " =====");
-			List<Instance<Integer, Boolean>> trainInstances = Utils.IntegerAttributeBooleanInstances(TRAIN_SIZE, DIMENSIONS, BOOLEAN_FUNCTION);
-			List<Instance<Integer, Boolean>> testInstances = Utils.IntegerAttributeBooleanInstances(TEST_SIZE, DIMENSIONS, BOOLEAN_FUNCTION);
+		//	List<Instance<Integer, Boolean>> trainInstances = Utils.IntegerAttributeBooleanInstances(TRAIN_SIZE, DIMENSIONS, BOOLEAN_FUNCTION);
+		//	List<Instance<Integer, Boolean>> testInstances = Utils.IntegerAttributeBooleanInstances(TEST_SIZE, DIMENSIONS, BOOLEAN_FUNCTION);
+			List<Instance<Integer, Boolean>> trainInstances = Utils.IntegerAttributeMOfNInstances(TRAIN_SIZE, DIMENSIONS / 2, DIMENSIONS, true);
+			List<Instance<Integer, Boolean>> testInstances = Utils.IntegerAttributeMOfNInstances(TEST_SIZE, DIMENSIONS / 2, DIMENSIONS, true);
 			
 		/*	for (int i = 0; i < trainInstances.size(); i++) {
 				System.out.println(trainInstances.get(i));

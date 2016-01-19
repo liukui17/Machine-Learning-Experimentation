@@ -29,7 +29,7 @@ public class BinaryPerceptron {
 		this.trainingExamples = trainingExamples;
 		weights = new double[trainingExamples.get(0).getDimensionality() + 1];
 		errorOnTrainingData = 0;
-		initializeRandomWeights();
+	//	initializeRandomWeights();
 	}
 	
 	public void initializeRandomWeights() {
@@ -69,7 +69,7 @@ public class BinaryPerceptron {
 	
 	public void train(int threshold) {
 		while (getErrorCountOnTrainingData() > threshold && learningRate > 0.000001) {
-			subsetGradientDescentUpdate(trainingExamples);
+			perceptronUpdate(trainingExamples);
 			learningRate *= LEARNING_RATE_DECAY;
 			steps++;
 		}
@@ -86,7 +86,7 @@ public class BinaryPerceptron {
 		return count;
 	}
 	
-	private void subsetGradientDescentUpdate(List<Instance<Integer, Boolean>> subset) {
+	private void perceptronUpdate(List<Instance<Integer, Boolean>> subset) {
 		double[] updates = new double[weights.length];
 		for (Instance<Integer, Boolean> instance : subset) {
 			double expected = 1.0;

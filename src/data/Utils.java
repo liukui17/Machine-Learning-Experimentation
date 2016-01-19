@@ -78,4 +78,50 @@ public class Utils {
 		}
 		return instances;
 	}
+	
+	public static List<Instance<Integer, Boolean>> IntegerAttributeMOfNInstances(int size, int m, int n, boolean atLeast) {
+		Random random = new Random();
+		List<Instance<Integer, Boolean>> instances = new ArrayList<Instance<Integer, Boolean>>(size);
+		for (int i = 0; i < size; i++) {
+			List<Integer> attributes = new ArrayList<Integer>(n);
+			int numTrue = 0;
+			for (int j = 0; j < n; j++) {
+				boolean next = random.nextBoolean();
+				if (next) {
+					numTrue++;
+					attributes.add(1);
+				} else {
+					attributes.add(0);
+				}
+			}
+			if (atLeast) {
+				instances.add(new Instance<Integer, Boolean>(attributes, numTrue >= m));
+			} else {
+				instances.add(new Instance<Integer, Boolean>(attributes, numTrue == m));
+			}
+		}
+		return instances;
+	}
+	
+	public static List<Instance<Boolean, Boolean>> MOfNInstances(int size, int m, int n, boolean atLeast) {
+		Random random = new Random();
+		List<Instance<Boolean, Boolean>> instances = new ArrayList<Instance<Boolean, Boolean>>(size);
+		for (int i = 0; i < size; i++) {
+			List<Boolean> attributes = new ArrayList<Boolean>(n);
+			int numTrue = 0;
+			for (int j = 0; j < n; j++) {
+				boolean next = random.nextBoolean();
+				if (next) {
+					numTrue++;
+				}
+				attributes.add(next);
+			}
+			if (atLeast) {
+				instances.add(new Instance<Boolean, Boolean>(attributes, numTrue >= m));
+			} else {
+				instances.add(new Instance<Boolean, Boolean>(attributes, numTrue == m));
+			}
+		}
+		return instances;
+	}
 }
