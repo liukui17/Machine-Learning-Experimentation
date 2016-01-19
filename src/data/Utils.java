@@ -91,7 +91,7 @@ public class Utils {
 					numTrue++;
 					attributes.add(1);
 				} else {
-					attributes.add(0);
+					attributes.add(-1);
 				}
 			}
 			if (atLeast) {

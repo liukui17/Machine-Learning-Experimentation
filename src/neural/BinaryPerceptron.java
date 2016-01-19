@@ -13,7 +13,7 @@ public class BinaryPerceptron {
 	
 	int steps;
 	
-	double learningRate = 0.1;
+	double learningRate = 0.002;
 	
 	double[] weights;
 	
@@ -29,7 +29,7 @@ public class BinaryPerceptron {
 		this.trainingExamples = trainingExamples;
 		weights = new double[trainingExamples.get(0).getDimensionality() + 1];
 		errorOnTrainingData = 0;
-	//	initializeRandomWeights();
+		initializeRandomWeights();
 	}
 	
 	public void initializeRandomWeights() {
@@ -43,8 +43,8 @@ public class BinaryPerceptron {
 		}
 	}
 	
-	public Boolean predict(List<Integer> data) {
-		double res = computeLinearOutput(data);
+	public boolean predict(List<Integer> data) {
+		double res = computeUnthresholdedOutput(data);
 		if (res > 0.0) {
 			return true;
 		} else {
@@ -52,7 +52,7 @@ public class BinaryPerceptron {
 		}
 	}
 	
-	private double computeLinearOutput(List<Integer> data) {
+	private double computeUnthresholdedOutput(List<Integer> data) {
 		double res = weights[0];
 		for (int i = 0; i < data.size(); i++) {
 			res += weights[i + 1] * data.get(i);
@@ -60,16 +60,10 @@ public class BinaryPerceptron {
 		return res;
 	}
 	
-/*	public void train() {
-		for (int i = 0; i < steps; i++) {
-			subsetGradientDescentUpdate(trainingExamples);
-			learningRate *= LEARNING_RATE_DECAY;
-		}
-	} */
-	
 	public void train(int threshold) {
-		while (getErrorCountOnTrainingData() > threshold && learningRate > 0.000001) {
-			perceptronUpdate(trainingExamples);
+		while (getErrorCountOnTrainingData() > threshold && learningRate > 0.00000001) {
+		//	perceptronUpdate(trainingExamples);
+			subsetGradientDescentUpdate(trainingExamples);
 			learningRate *= LEARNING_RATE_DECAY;
 			steps++;
 		}
@@ -84,6 +78,25 @@ public class BinaryPerceptron {
 			}
 		}
 		return count;
+	}
+	
+	private void subsetGradientDescentUpdate(List<Instance<Integer, Boolean>> subset) {
+		double[] updates = new double[weights.length];
+		for (Instance<Integer, Boolean> instance : subset) {
+			double expected = 1.0;
+			if (!instance.getLabel()) {
+				expected = -1.0;
+			}
+			double res = computeUnthresholdedOutput(instance.getAttributeValues());
+		//	System.out.println(res);
+			updates[0] += learningRate * (expected - res);
+			for (int i = 0; i < instance.getDimensionality(); i++) {
+				updates[i + 1] += (learningRate * (expected - res) * instance.getAttributeValue(i));
+			}
+		}
+		for (int i = 0; i < weights.length; i++) {
+			weights[i] += updates[i];
+		}
 	}
 	
 	private void perceptronUpdate(List<Instance<Integer, Boolean>> subset) {
