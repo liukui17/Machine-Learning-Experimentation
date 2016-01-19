@@ -29,7 +29,7 @@ public class BinaryPerceptron {
 		this.trainingExamples = trainingExamples;
 		weights = new double[trainingExamples.get(0).getDimensionality() + 1];
 		errorOnTrainingData = 0;
-		initializeRandomWeights();
+	//	initializeRandomWeights();
 	}
 	
 	public void initializeRandomWeights() {

@@ -15,19 +15,19 @@ import neural.BinaryPerceptron;
  * training data didn't contain any instances of 'true' (for AND) and
  * 'false' (for OR).
  * 
- * The perceptron learns fairly quickly to classify M-of-N rules. It
- * a lower learning however or else it will diverge and the weights
+ * The perceptron learns fairly quickly to classify at-least-M-of-N rules.
+ * It a lower learning however or else it will diverge and the weights
  * blow up. Another mistake was the perceptron wasn't given enough
  * data so it was learning incorrect concepts.
  * 
- * Using 4096 M-of-N examples (M = N/2, N = 16), we can get pretty
+ * Using 4096 at-least-M-of-N examples (M = N/2, N = 20), we can get pretty
  * much 100% classification accuracy (1024 testing examples) on all trials.
- * It takes around 150 milliseconds to train and around 300 steps to converge.
+ * It takes around 150 milliseconds to train and around 350 steps to converge.
  */
 public class TestBinaryPerceptronBoolean {
 	static final Random RANDOM = new Random();
 	static final int TRIALS = 10;
-	static final int DIMENSIONS = 16;
+	static final int DIMENSIONS = 20;
 	static final int TRAIN_SIZE = 4096;
 	static final int TEST_SIZE = 1024;
 	static final int BOOLEAN_FUNCTION = 0;
