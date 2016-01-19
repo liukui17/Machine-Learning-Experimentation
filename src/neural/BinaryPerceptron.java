@@ -9,6 +9,8 @@ public class BinaryPerceptron {
 	
 	static final double LEARNING_RATE_DECAY = 0.99;
 	
+	static final double STOCHASTIC_LEARNING_RATE_DECAY = 0.9999;
+	
 	double errorOnTrainingData;
 	
 	int steps;
@@ -22,7 +24,8 @@ public class BinaryPerceptron {
 	public BinaryPerceptron(List<Instance<Integer, Boolean>> trainingExamples, int threshold) {
 		setUp(trainingExamples);
 		steps = 0;
-		train(threshold);
+	//	train(threshold);
+		stochasticTrain(threshold);
 	}
 	
 	private void setUp(List<Instance<Integer, Boolean>> trainingExamples) {
@@ -70,6 +73,14 @@ public class BinaryPerceptron {
 		errorOnTrainingData = ((double) getErrorCountOnTrainingData()) / trainingExamples.size();
 	}
 	
+	public void stochasticTrain(int threshold) {
+		while (learningRate > 0.00000001) {
+			stochasticGradientDescentUpdate(trainingExamples.get(steps % trainingExamples.size()));
+			learningRate *= STOCHASTIC_LEARNING_RATE_DECAY;
+			steps++;
+		}
+	}
+	
 	private int getErrorCountOnTrainingData() {
 		int count = 0;
 		for (Instance<Integer, Boolean> instance : trainingExamples) {
@@ -78,6 +89,18 @@ public class BinaryPerceptron {
 			}
 		}
 		return count;
+	}
+	
+	private void stochasticGradientDescentUpdate(Instance<Integer, Boolean> example) {
+		double expected = 1.0;
+		if (!example.getLabel()) {
+			expected = -1.0;
+		}
+		double res = computeUnthresholdedOutput(example.getAttributeValues());
+		weights[0] += learningRate * (expected - res);
+		for (int i = 0; i < example.getDimensionality(); i++) {
+			weights[i + 1] += (learningRate * (expected - res) * example.getAttributeValue(i));
+		}
 	}
 	
 	private void subsetGradientDescentUpdate(List<Instance<Integer, Boolean>> subset) {
