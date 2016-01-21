@@ -13,21 +13,27 @@ import neural.BinaryPerceptron;
  * separable). It can seem to error on AND and OR on tests but these
  * trials are misleading since what very likely happened was that the
  * training data didn't contain any instances of 'true' (for AND) and
- * 'false' (for OR).
+ * 'false' (for OR). This was done using the perceptron training rule.
  * 
- * The perceptron learns fairly quickly to classify M-of-N rules. It
- * a lower learning however or else it will diverge and the weights
+ * The perceptron learns fairly quickly to classify at-least-M-of-N rules.
+ * It a lower learning however or else it will diverge and the weights
  * blow up. Another mistake was the perceptron wasn't given enough
  * data so it was learning incorrect concepts.
  * 
- * Using 4096 M-of-N examples (M = N/2, N = 16), we can get pretty
+ * Using 4096 at-least-M-of-N examples (M = N/2, N = 20), we can get pretty
  * much 100% classification accuracy (1024 testing examples) on all trials.
- * It takes around 150 milliseconds to train and around 300 steps to converge.
+ * It takes around 150 milliseconds to train and around 350 steps to converge.
+ * These tests were ran using batch gradient descent.
+ * 
+ * Using the same training and testing conditions as above but using stochastic
+ * gradient descent, the algorithm converges in under 25 milliseconds, runs
+ * through 100000+ iterations and correctly classifies pretty much all examples
+ * on all trials.
  */
 public class TestBinaryPerceptronBoolean {
 	static final Random RANDOM = new Random();
 	static final int TRIALS = 10;
-	static final int DIMENSIONS = 16;
+	static final int DIMENSIONS = 20;
 	static final int TRAIN_SIZE = 4096;
 	static final int TEST_SIZE = 1024;
 	static final int BOOLEAN_FUNCTION = 0;
