@@ -34,7 +34,7 @@ public class RandomEntropyDecisionTree<A, L> extends DecisionTree<A, L> {
 	/** the number of (randomized) attributes to consider at each split */
 	int consider;
 	
-//	double significanceThreshold = 0.01;
+	double significanceThreshold = 0.15;
 
 	public RandomEntropyDecisionTree(List<Instance<A, L>> trainingExamples, int consider) {
 		super(trainingExamples);
@@ -84,7 +84,7 @@ public class RandomEntropyDecisionTree<A, L> extends DecisionTree<A, L> {
 					if (this.splitAttribute != -1) {
 						Map<A, Map<L, List<Instance<A, L>>>> partitionedSubsets = partition(this.splitAttribute,
 								trainingSubset);
-					//	if (isStatisticallySignificant(trainingSubset, partitionedSubsets, significanceThreshold)) {
+						if (isStatisticallySignificant(trainingSubset, partitionedSubsets, significanceThreshold)) {
 							children = new HashMap<A, DecisionNode>(partitionedSubsets.size(), (float) 1.0);
 							Iterator<A> iter = partitionedSubsets.keySet().iterator();
 							while (iter.hasNext()) {
@@ -92,7 +92,7 @@ public class RandomEntropyDecisionTree<A, L> extends DecisionTree<A, L> {
 								Map<L, List<Instance<A, L>>> nextSubset = partitionedSubsets.get(next);
 								children.put(next, new DecisionNode(nextSubset, depth));
 							}
-					//	}
+						}
 					}
 				}
 				
