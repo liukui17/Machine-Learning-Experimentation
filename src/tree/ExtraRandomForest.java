@@ -11,7 +11,7 @@ public class ExtraRandomForest<A, L> extends RandomForest<A, L> {
 	
 	public static final int DEFAULT_SUBSET_RATIO = 2;
 	
-	public ExtraRandomForest(List<Instance<A, L>> trainingExamples, int subsetSize, int committeeSize) {
+	public ExtraRandomForest(List<Instance<A, L>> trainingExamples, double significanceThreshold, int subsetSize, int committeeSize) {
 		super(trainingExamples, subsetSize, committeeSize);
 		int totalHeights = 0;
 		int totalLeaves = 0;
@@ -20,7 +20,7 @@ public class ExtraRandomForest<A, L> extends RandomForest<A, L> {
 			 * Default to nominating only 1/10 the number of total attributes at each iteration.
 			 */
 			DecisionTree<A, L> nextTree = new RandomEntropyDecisionTree<A, L>(Utils.makeSubset(trainingExamples, subsetSize),
-					trainingExamples.get(0).getDimensionality() / DEFAULT_NOMINATION_RATIO);
+					significanceThreshold, trainingExamples.get(0).getDimensionality() / DEFAULT_NOMINATION_RATIO);
 			committee.add(nextTree);
 
 			updateStats(nextTree);
@@ -32,13 +32,13 @@ public class ExtraRandomForest<A, L> extends RandomForest<A, L> {
 		updateAverages(totalHeights, totalLeaves);
 	}
 	
-	public ExtraRandomForest(List<Instance<A, L>> trainingExamples, int subsetSize, List<Integer> nominationCounts) {
+	public ExtraRandomForest(List<Instance<A, L>> trainingExamples, double significanceThreshold, int subsetSize, List<Integer> nominationCounts) {
 		super(trainingExamples, subsetSize, nominationCounts.size());
 		int totalHeights = 0;
 		int totalLeaves = 0;
 		for (int i = 0; i < nominationCounts.size(); i++) {
 			DecisionTree<A, L> nextTree = new RandomEntropyDecisionTree<A, L>(Utils.makeSubset(trainingExamples, subsetSize),
-					nominationCounts.get(i));
+					significanceThreshold, nominationCounts.get(i));
 			committee.add(nextTree);
 			
 			updateStats(nextTree);
@@ -50,7 +50,7 @@ public class ExtraRandomForest<A, L> extends RandomForest<A, L> {
 		updateAverages(totalHeights, totalLeaves);
 	}
 
-	public ExtraRandomForest(List<Instance<A, L>> trainingExamples, int committeeSize) {
-		this(trainingExamples, trainingExamples.size() / DEFAULT_SUBSET_RATIO, committeeSize);
+	public ExtraRandomForest(List<Instance<A, L>> trainingExamples, double significanceThreshold, int committeeSize) {
+		this(trainingExamples, significanceThreshold, trainingExamples.size() / DEFAULT_SUBSET_RATIO, committeeSize);
 	}
 }

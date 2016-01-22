@@ -21,11 +21,9 @@ public class RandomDecisionTree<A, L> extends DecisionTree<A, L> {
 
 	/** the random number generator used for deciding the splitting attribute */
 	Random random;
-	
-	double significanceThreshold = 0.5;
 
-	public RandomDecisionTree(List<Instance<A, L>> trainingExamples) {
-		super(trainingExamples);
+	public RandomDecisionTree(List<Instance<A, L>> trainingExamples, double significanceThreshold) {
+		super(trainingExamples, significanceThreshold);
 		random = new Random();
 		root = new DecisionNode(this.trainingExamples, -1);
 	}

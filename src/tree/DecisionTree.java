@@ -62,6 +62,9 @@ public abstract class DecisionTree<A, L> {
 	
 	/** the number of leaves in the decision tree */
 	int leafCount;
+	
+	/** the significance level used to determine when to stop splitting */
+	double significanceThreshold;
 
 	/**
 	 * Constructs a new decision tree classifier.
@@ -70,7 +73,7 @@ public abstract class DecisionTree<A, L> {
 	 *            the training examples (pairs of feature vectors and labels)
 	 *            used to build this tree
 	 */
-	public DecisionTree(List<Instance<A, L>> trainingExamples) {
+	public DecisionTree(List<Instance<A, L>> trainingExamples, double significanceThreshold) {
 
 		/*
 		 * currently, we're assuming that all feature vectors have the same
@@ -79,6 +82,7 @@ public abstract class DecisionTree<A, L> {
 		this.dimensionality = trainingExamples.get(0).getDimensionality();
 		this.trainingDataSize = trainingExamples.size();
 		this.trainingExamples = new HashMap<L, List<Instance<A, L>>>();
+		this.significanceThreshold = significanceThreshold;
 
 		/*
 		 * First, we perform some preprocessing by building up a map from each
@@ -241,7 +245,7 @@ public abstract class DecisionTree<A, L> {
 					double ratio = numWithValue * trainingSubset.get(label).size() / trainingSubsetSize;
 					List<Instance<A, L>> instancesWithValueAndLabel = subset.get(value).get(label);
 					if (instancesWithValueAndLabel == null) {
-						res += res;
+						res += ratio;
 					} else {
 						res += Math.pow((subset.get(value).get(label).size() - ratio), 2) / ratio;
 					}

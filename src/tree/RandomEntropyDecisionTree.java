@@ -36,8 +36,8 @@ public class RandomEntropyDecisionTree<A, L> extends DecisionTree<A, L> {
 	
 	double significanceThreshold = 0.15;
 
-	public RandomEntropyDecisionTree(List<Instance<A, L>> trainingExamples, int consider) {
-		super(trainingExamples);
+	public RandomEntropyDecisionTree(List<Instance<A, L>> trainingExamples, double significanceThreshold, int consider) {
+		super(trainingExamples, significanceThreshold);
 		random = new Random();
 		this.consider = consider;
 		root = new DecisionNode(this.trainingExamples, -1);

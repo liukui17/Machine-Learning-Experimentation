@@ -17,11 +17,9 @@ public class EntropyDecisionTree<A, L> extends DecisionTree<A, L> {
 
 	/** the root node of the decision tree */
 	DecisionNode root;
-	
-	double significanceThreshold = 0.07;
 
-	public EntropyDecisionTree(List<Instance<A, L>> trainingExamples) {
-		super(trainingExamples);
+	public EntropyDecisionTree(List<Instance<A, L>> trainingExamples, double significanceThreshold) {
+		super(trainingExamples, significanceThreshold);
 		root = new DecisionNode(this.trainingExamples, -1);
 	}
 
