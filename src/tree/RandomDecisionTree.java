@@ -21,6 +21,8 @@ public class RandomDecisionTree<A, L> extends DecisionTree<A, L> {
 
 	/** the random number generator used for deciding the splitting attribute */
 	Random random;
+	
+	double significanceThreshold = 0.5;
 
 	public RandomDecisionTree(List<Instance<A, L>> trainingExamples) {
 		super(trainingExamples);
@@ -68,12 +70,14 @@ public class RandomDecisionTree<A, L> extends DecisionTree<A, L> {
 					this.splitAttribute = random.nextInt(dimensionality);
 					Map<A, Map<L, List<Instance<A, L>>>> partitionedSubsets = partition(this.splitAttribute,
 							trainingSubset);
-					children = new HashMap<A, DecisionNode>(partitionedSubsets.size(), (float) 1.0);
-					Iterator<A> iter = partitionedSubsets.keySet().iterator();
-					while (iter.hasNext()) {
-						A next = iter.next();
-						Map<L, List<Instance<A, L>>> nextSubset = partitionedSubsets.get(next);
-						children.put(next, new DecisionNode(nextSubset, depth));
+					if (isStatisticallySignificant(trainingSubset, partitionedSubsets, significanceThreshold)) {
+						children = new HashMap<A, DecisionNode>(partitionedSubsets.size(), (float) 1.0);
+						Iterator<A> iter = partitionedSubsets.keySet().iterator();
+						while (iter.hasNext()) {
+							A next = iter.next();
+							Map<L, List<Instance<A, L>>> nextSubset = partitionedSubsets.get(next);
+							children.put(next, new DecisionNode(nextSubset, depth));
+						}
 					}
 				}
 				

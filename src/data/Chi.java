@@ -26,7 +26,7 @@ public class Chi {
 
 	static double BIGX = 20.0;                  /* max value to represent exp(x) */
 
-	static double poz(double z) {
+	public static double poz(double z) {
 		double y, x, w;
 		double Z_MAX = 6.0;              /* Maximum meaningful z value */
 
@@ -58,11 +58,11 @@ public class Chi {
 		return z > 0.0 ? ((x + 1.0) * 0.5) : ((1.0 - x) * 0.5);
 	}
 
-	static double ex(double x) {
+	public static double ex(double x) {
 		return (x < -BIGX) ? 0.0 : Math.exp(x);
 	}
 
-	static double pochisq(double x, int df) {
+	public static double pochisq(double x, int df) {
 		double a, y=0, s;
 		double e, c, z;
 		boolean even;                     /* True if df is an even number */
@@ -112,7 +112,7 @@ public class Chi {
                      search for a value within CHI_EPSILON,
                      relying on the monotonicity of pochisq().  */
 
-	static double critchi(double p, int df) {
+	public static double critchi(double p, int df) {
 		double CHI_EPSILON = 0.000001;   /* Accuracy of critchi approximation */
 		double CHI_MAX = 99999.0;        /* Maximum chi-square value */
 		double minchisq = 0.0;

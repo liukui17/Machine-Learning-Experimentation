@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import data.Chi;
 import data.Instance;
 
 /**
@@ -219,6 +220,34 @@ public abstract class DecisionTree<A, L> {
 			this.trainingSubsetSize = getSubsetSize(trainingSubset);
 			nodeCount++;
 			depth = parentDepth + 1;
+		}
+		
+		public boolean isStatisticallySignificant(Map<L, List<Instance<A, L>>> trainingSubset,
+				Map<A, Map<L, List<Instance<A, L>>>> subset, double significanceThreshold) {
+			double testStatistic = computeTestStatistic(trainingSubset, subset);
+			double crit = Chi.critchi(significanceThreshold, (trainingSubset.size() - 1) * (subset.size() - 1));
+			return testStatistic > crit;
+		}
+		
+		public double computeTestStatistic(Map<L, List<Instance<A, L>>> trainingSubset,
+				Map<A, Map<L, List<Instance<A, L>>>> subset) {
+			double res = 0.0;
+			for (A value : subset.keySet()) {
+				double numWithValue = 0.0;
+				for (L label : subset.get(value).keySet()) {
+					numWithValue += subset.get(value).get(label).size();
+				}
+				for (L label : trainingSubset.keySet()) {
+					double ratio = numWithValue * trainingSubset.get(label).size() / trainingSubsetSize;
+					List<Instance<A, L>> instancesWithValueAndLabel = subset.get(value).get(label);
+					if (instancesWithValueAndLabel == null) {
+						res += res;
+					} else {
+						res += Math.pow((subset.get(value).get(label).size() - ratio), 2) / ratio;
+					}
+				}
+			}
+			return res;
 		}
 
 		/**

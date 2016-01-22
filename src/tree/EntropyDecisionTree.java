@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import data.Chi;
 import data.Instance;
 
 /**
@@ -16,6 +17,8 @@ public class EntropyDecisionTree<A, L> extends DecisionTree<A, L> {
 
 	/** the root node of the decision tree */
 	DecisionNode root;
+	
+	double significanceThreshold = 0.07;
 
 	public EntropyDecisionTree(List<Instance<A, L>> trainingExamples) {
 		super(trainingExamples);
@@ -63,12 +66,14 @@ public class EntropyDecisionTree<A, L> extends DecisionTree<A, L> {
 					if (this.splitAttribute != -1) {
 						Map<A, Map<L, List<Instance<A, L>>>> partitionedSubsets = partition(this.splitAttribute,
 								trainingSubset);
-						children = new HashMap<A, DecisionNode>(partitionedSubsets.size(), (float) 1.0);
-						Iterator<A> iter = partitionedSubsets.keySet().iterator();
-						while (iter.hasNext()) {
-							A next = iter.next();
-							Map<L, List<Instance<A, L>>> nextSubset = partitionedSubsets.get(next);
-							children.put(next, new DecisionNode(nextSubset, depth));
+						if (isStatisticallySignificant(trainingSubset, partitionedSubsets, significanceThreshold)) {
+							children = new HashMap<A, DecisionNode>(partitionedSubsets.size(), (float) 1.0);
+							Iterator<A> iter = partitionedSubsets.keySet().iterator();
+							while (iter.hasNext()) {
+								A next = iter.next();
+								Map<L, List<Instance<A, L>>> nextSubset = partitionedSubsets.get(next);
+								children.put(next, new DecisionNode(nextSubset, depth));
+							}
 						}
 					}
 				}
