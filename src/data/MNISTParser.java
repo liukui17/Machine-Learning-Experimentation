@@ -6,9 +6,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 public class MNISTParser {
 	public static final String TRAIN_IMAGES = "./src/data/mnist/train-images.idx3-ubyte";
@@ -123,6 +125,15 @@ public class MNISTParser {
 			}
 		}
 		return attributes;
+	}
+	
+	public static void addNoiseMNIST(List<Instance<Integer, Integer>> examples, int numIncorrect) {
+		Collections.shuffle(examples);
+		Random random = new Random();
+		for (int i = 0; i < numIncorrect; i++) {
+			examples.get(i).setLabel(random.nextInt(10));
+		}
+		Collections.shuffle(examples);
 	}
 	
 /*	public static List<NumericalInstance<Integer>> makeNumericalInstances(List<int[][]> images, int[] labels, int start, int limit) {

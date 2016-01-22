@@ -78,6 +78,11 @@ public class TestTreePackage {
 		testLabels = null;
 
 		int trainSubsetSize = trainInstances.size();
+		
+		/*
+		 * comment this out if don't want to add noise to data
+		 */
+	//	MNISTParser.addNoiseMNIST(trainInstances, 50000);
 
 		for (int j = 0; j < 10; j++) {
 			System.out.println("===== TEST " + j + " =====");

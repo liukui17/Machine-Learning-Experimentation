@@ -42,6 +42,10 @@ public class Instance<A,L> {
 		return label;
 	}
 	
+	public void setLabel(L newLabel) {
+		label = newLabel;
+	}
+	
 	public String toString() {
 		return "{" + attributeValues.toString() + ", " + label.toString() + "}";
 	}
