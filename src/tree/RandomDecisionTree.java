@@ -68,7 +68,7 @@ public class RandomDecisionTree<A, L> extends DecisionTree<A, L> {
 					this.splitAttribute = random.nextInt(dimensionality);
 					Map<A, Map<L, List<Instance<A, L>>>> partitionedSubsets = partition(this.splitAttribute,
 							trainingSubset);
-					if (isStatisticallySignificant(trainingSubset, partitionedSubsets, significanceThreshold)) {
+					if (isStatisticallySignificant(trainingSubset, partitionedSubsets)) {
 						children = new HashMap<A, DecisionNode>(partitionedSubsets.size(), (float) 1.0);
 						Iterator<A> iter = partitionedSubsets.keySet().iterator();
 						while (iter.hasNext()) {

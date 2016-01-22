@@ -90,11 +90,11 @@ public class TestTreePackage {
 
 			System.out.println("Training...");
 			long startTime = System.currentTimeMillis();
-		//	DecisionTree<Integer, Integer> tree = new EntropyDecisionTree<Integer, Integer>(subTrainInstances, 0.07);
+		//	DecisionTree<Integer, Integer> tree = new EntropyDecisionTree<Integer, Integer>(subTrainInstances, 0.05);
 		//	DecisionTree<Integer, Integer> tree = new RandomEntropyDecisionTree<Integer, Integer>(subTrainInstances, 0.15, 100);
 		//	DecisionTree<Integer, Integer> tree = new RandomDecisionTree<Integer, Integer>(subTrainInstances, 0.5);
 		//	RandomForest<Integer, Integer> forest = new ExtremelyRandomForest<Integer, Integer>(subTrainInstances, 0.5, 61);
-		//	RandomForest<Integer, Integer> forest = new EntropyRandomForest<Integer, Integer>(subTrainInstances, 0.07, 40000, 61);
+		//	RandomForest<Integer, Integer> forest = new EntropyRandomForest<Integer, Integer>(subTrainInstances, 0.05, 40000, 61);
 			RandomForest<Integer, Integer> forest = new ExtraRandomForest<Integer, Integer>(subTrainInstances, 0.15, 60000, 61);
 			System.out.println("Training complete (" + (System.currentTimeMillis() - startTime) + " milliseconds)");
 		//	tree.printStats();

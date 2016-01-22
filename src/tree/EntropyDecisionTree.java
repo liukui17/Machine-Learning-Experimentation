@@ -64,7 +64,7 @@ public class EntropyDecisionTree<A, L> extends DecisionTree<A, L> {
 					if (this.splitAttribute != -1) {
 						Map<A, Map<L, List<Instance<A, L>>>> partitionedSubsets = partition(this.splitAttribute,
 								trainingSubset);
-						if (isStatisticallySignificant(trainingSubset, partitionedSubsets, significanceThreshold)) {
+						if (isStatisticallySignificant(trainingSubset, partitionedSubsets)) {
 							children = new HashMap<A, DecisionNode>(partitionedSubsets.size(), (float) 1.0);
 							Iterator<A> iter = partitionedSubsets.keySet().iterator();
 							while (iter.hasNext()) {

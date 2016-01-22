@@ -227,10 +227,13 @@ public abstract class DecisionTree<A, L> {
 		}
 		
 		public boolean isStatisticallySignificant(Map<L, List<Instance<A, L>>> trainingSubset,
-				Map<A, Map<L, List<Instance<A, L>>>> subset, double significanceThreshold) {
+				Map<A, Map<L, List<Instance<A, L>>>> subset) {
 			double testStatistic = computeTestStatistic(trainingSubset, subset);
+		//	double upCrit = Chi.critchi(significanceThreshold / 2, (trainingSubset.size() - 1) * (subset.size() - 1));
+		//	double lowCrit = Chi.critchi(1.0 - (significanceThreshold / 2), (trainingSubset.size() - 1) * (subset.size() - 1));
+		//	return (testStatistic >= upCrit) || (testStatistic <= lowCrit);
 			double crit = Chi.critchi(significanceThreshold, (trainingSubset.size() - 1) * (subset.size() - 1));
-			return testStatistic > crit;
+			return testStatistic >= crit;
 		}
 		
 		public double computeTestStatistic(Map<L, List<Instance<A, L>>> trainingSubset,
@@ -242,12 +245,12 @@ public abstract class DecisionTree<A, L> {
 					numWithValue += subset.get(value).get(label).size();
 				}
 				for (L label : trainingSubset.keySet()) {
-					double ratio = numWithValue * trainingSubset.get(label).size() / trainingSubsetSize;
+					double ratio = (numWithValue * trainingSubset.get(label).size()) / trainingSubsetSize;
 					List<Instance<A, L>> instancesWithValueAndLabel = subset.get(value).get(label);
 					if (instancesWithValueAndLabel == null) {
 						res += ratio;
 					} else {
-						res += Math.pow((subset.get(value).get(label).size() - ratio), 2) / ratio;
+						res += Math.pow((instancesWithValueAndLabel.size() - ratio), 2.0) / ratio;
 					}
 				}
 			}

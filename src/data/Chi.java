@@ -143,9 +143,9 @@ public class Chi {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		System.out.println("DF\tp=0.05\tp=0.01");
+		System.out.println("DF\tp=0.95\tp=0.99");
 		for(int df=1; df<=100; df++)
-			System.out.println(df + "\t" + String.format("%.2f",critchi(0.05,df)) + "\t" + String.format("%.2f",critchi(0.01,df)));
+			System.out.println(df + "\t" + String.format("%.2f",critchi(0.95,df)) + "\t" + String.format("%.2f",critchi(0.99,df)));
 	}
 
 }
