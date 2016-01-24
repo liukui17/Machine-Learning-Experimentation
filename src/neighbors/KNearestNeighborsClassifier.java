@@ -1,6 +1,5 @@
 package neighbors;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -8,7 +7,8 @@ import java.util.Map;
 import java.util.PriorityQueue;
 
 import data.Instance;
-import data.NumericalInstance;
+import data.IntegerInstanceDistancePair;
+import data.Utils;
 
 public class KNearestNeighborsClassifier<L> {
 	int k;
@@ -58,87 +58,38 @@ public class KNearestNeighborsClassifier<L> {
 	} */
 	
 	public L predict(List<Integer> newData) {
-		PriorityQueue<InstanceDistancePair> kNearest = getKNearest(newData);
+		PriorityQueue<IntegerInstanceDistancePair<L>> kNearest = getKNearest(newData);
 		Map<L, Double> weightedVotes = new HashMap<L, Double>();
-		for (InstanceDistancePair pair : kNearest) {
-			L label = pair.instance.getLabel();
+		for (IntegerInstanceDistancePair<L> pair : kNearest) {
+			L label = pair.getInstance().getLabel();
 			if (weightedVotes.containsKey(label)) {
-				weightedVotes.put(label, weightedVotes.get(label) + (1.0 / Math.pow(pair.dist, 2.0)));
+				weightedVotes.put(label, weightedVotes.get(label) + (1.0 / Math.pow(pair.getDistance(), 2.0)));
 			} else {
-				weightedVotes.put(label, (1.0 / Math.pow(pair.dist, 2.0)));
+				weightedVotes.put(label, (1.0 / Math.pow(pair.getDistance(), 2.0)));
 			}
 		}
-		L predict = null;
-		double weight = -Double.MAX_VALUE;
-		for (L label : weightedVotes.keySet()) {
-			double nextWeight = weightedVotes.get(label);
-			if (nextWeight > weight) {
-				weight = nextWeight;
-				predict = label;
-			}
-		}
-		return predict;
+		return Utils.getHighestScorer(weightedVotes);
 	}
 	
-	private PriorityQueue<InstanceDistancePair> getKNearest(List<Integer> newData) {
-		PriorityQueue<InstanceDistancePair> nearestK = new PriorityQueue<InstanceDistancePair>(k);
+	private PriorityQueue<IntegerInstanceDistancePair<L>> getKNearest(List<Integer> newData) {
+		PriorityQueue<IntegerInstanceDistancePair<L>> nearestK = new PriorityQueue<IntegerInstanceDistancePair<L>>(k);
 		for (L label : instances.keySet()) {
 			List<Instance<Integer, L>> nextInstances = instances.get(label);
 			for (Instance<Integer, L> instance : nextInstances) {
 				double dist = 0.0;
 				if (n <= 0) {
-					dist = LInfinityNorm(instance.getAttributeValues(), newData);
+					dist = Utils.intLInfinityNorm(instance.getAttributeValues(), newData);
 				} else {
-					dist = LnNorm(instance.getAttributeValues(), newData, n);
+					dist = Utils.intLnNorm(instance.getAttributeValues(), newData, n);
 				}
 				if (nearestK.size() < k) {
-					nearestK.offer(new InstanceDistancePair(instance, dist));
-				} else if (dist < nearestK.peek().dist) {
+					nearestK.offer(new IntegerInstanceDistancePair<L>(instance, dist));
+				} else if (dist < nearestK.peek().getDistance()) {
 					nearestK.remove();
-					nearestK.offer(new InstanceDistancePair(instance, dist));
+					nearestK.offer(new IntegerInstanceDistancePair<L>(instance, dist));
 				}
 			}
 		}
 		return nearestK;
-	}
-	
-	public double LnNorm(List<Integer> first, List<Integer> second, int n) {
-		double res = 0.0;
-		for (int i = 0; i < first.size(); i++) {
-			res += Math.abs(Math.pow(first.get(i) - second.get(i), n));
-		}
-		return Math.pow(res, 1.0 / n);
-	}
-	
-	public double LInfinityNorm(List<Integer> first, List<Integer> second) {
-		double res = 0.0;
-		for (int i = 0; i < first.size(); i++) {
-			double nextAttributeDistance = Math.abs(first.get(i) - second.get(i));
-			if (nextAttributeDistance > res) {
-				res = nextAttributeDistance;
-			}
-		}
-		return res;
-	}
-	
-	private class InstanceDistancePair implements Comparable<InstanceDistancePair> {
-		
-		Instance<Integer, L> instance;
-		double dist;
-		
-		public InstanceDistancePair(Instance<Integer, L> instance, double dist) {
-			this.instance = instance;
-			this.dist = dist;
-		}
-		
-		public int compareTo(InstanceDistancePair other) {
-			if (this.dist > other.dist) {
-				return -1;
-			} else if (this.dist == other.dist) {
-				return 0;
-			} else {
-				return 1;
-			}
-		}
 	}
 }

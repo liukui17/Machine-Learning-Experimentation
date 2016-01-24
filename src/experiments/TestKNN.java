@@ -22,7 +22,7 @@ import neighbors.KNearestNeighborsClassifier;
  		KNearestNeighborsClassifier<Integer> knn = new KNearestNeighborsClassifier<Integer>(trainInstances, 10, 2);
  		
  		int correct = 0;
- 		int total = 10000;
+ 		int total = 10;
  		long start = System.currentTimeMillis();
  		for (int i = 0; i < total; i++) {
  			int prediction = knn.predict(testInstances.get(i).getAttributeValues());
@@ -32,6 +32,6 @@ import neighbors.KNearestNeighborsClassifier;
  			}
  		}
  		System.out.println("Correct: " + correct + "\tTotal: " + total +
- 						   "\tTime: " + (System.currentTimeMillis() - start) + " milliseconds");
+				"\tPrediction Time: " + (System.currentTimeMillis() - start));
  	}
  }

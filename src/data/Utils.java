@@ -2,7 +2,9 @@ package data;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class Utils {
@@ -123,5 +125,79 @@ public class Utils {
 			}
 		}
 		return instances;
+	}
+	
+	public static double intLnNorm(List<Integer> first, List<Integer> second, int n) {
+		double res = 0.0;
+		for (int i = 0; i < first.size(); i++) {
+			res += Math.pow(Math.abs(first.get(i) - second.get(i)), n);
+		}
+		return res;
+	}
+	
+	public static double intLInfinityNorm(List<Integer> first, List<Integer> second) {
+		double res = 0.0;
+		for (int i = 0; i < first.size(); i++) {
+			double nextAttributeDistance = Math.abs(first.get(i) - second.get(i));
+			if (nextAttributeDistance > res) {
+				res = nextAttributeDistance;
+			}
+		}
+		return res;
+	}
+	
+	public static double doubleLnNorm(List<Double> first, List<Double> second, int n) {
+		double res = 0.0;
+		for (int i = 0; i < first.size(); i++) {
+			res += Math.pow(Math.abs(first.get(i) - second.get(i)), n);
+		}
+		return res;
+	}
+	
+	public static double doubleLInfinityNorm(List<Double> first, List<Double> second) {
+		double res = 0.0;
+		for (int i = 0; i < first.size(); i++) {
+			double nextAttributeDistance = Math.abs(first.get(i) - second.get(i));
+			if (nextAttributeDistance > res) {
+				res = nextAttributeDistance;
+			}
+		}
+		return res;
+	}
+	
+	public static <L> L getMajority(Map<L, Integer> votesMap) {
+		Iterator<L> it = votesMap.keySet().iterator();
+		L best = null;
+		if (it.hasNext()) {
+			best = it.next();
+			int bestScore = votesMap.get(best);
+			while (it.hasNext()) {
+				L next = it.next();
+				int nextScore = votesMap.get(next);
+				if (nextScore > bestScore) {
+					best = next;
+					bestScore = nextScore;
+				}
+			}
+		}
+		return best;
+	}
+	
+	public static <L> L getHighestScorer(Map<L, Double> scoresMap) {
+		Iterator<L> it = scoresMap.keySet().iterator();
+		L best = null;
+		if (it.hasNext()) {
+			best = it.next();
+			double bestScore = scoresMap.get(best);
+			while (it.hasNext()) {
+				L next = it.next();
+				double nextScore = scoresMap.get(next);
+				if (nextScore > bestScore) {
+					best = next;
+					bestScore = nextScore;
+				}
+			}
+		}
+		return best;
 	}
 }
