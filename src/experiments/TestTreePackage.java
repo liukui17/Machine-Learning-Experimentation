@@ -15,19 +15,19 @@ import tree.*;
  * the classifier gets around 89.23% classification accuracy and takes around 75
  * seconds to train
  * 
- * EntropyRandomForest: with a committee of 100 EntropyDecisionTrees, each
- * trained on a randomized subset of the 60000 training examples of size 40000,
- * the classifier gets around 95.25% (highest 95.41%) classification accuracy
+ * BaggedTrees: with a committee of 100 EntropyDecisionTrees, each trained
+ * on a randomized subset of the 60000 training examples of size 40000, the
+ * classifier gets around 95.25% (highest 95.41%) classification accuracy
  * and takes around 75 minutes to train
  * 
  * RandomDecisionTree: with a RandomDecisionTree trained on 60000 examples, the
  * classifier gets around 74 (highest 75.61%) classification accuracy and takes
  * around 500-700 milliseconds to train
  * 
- * ExtraRandomForest: with an ExtraRandomForest trained on 60000 examples (60000
- * for each RandomEntropyDecisionTree in its committee) with a committee size of
- * 101 and using the default nomination ratio (randomly select 1/25 of the number
- * of total attributes to consider when greedily splitting), got 97.28% classification
+ * RandomForest: with an RandomForest trained on 60000 examples (60000 for each
+ * RandomEntropyDecisionTree in its committee) with a committee size of 101 and
+ * using the default nomination ratio (randomly select 1/25 of the number of total
+ * attributes to consider when greedily splitting), got 97.28% classification
  * accuracy and took around 400 seconds to train. It seems to average around 97%
  * classification accuracy.
  * 
@@ -93,9 +93,9 @@ public class TestTreePackage {
 		//	DecisionTree<Integer, Integer> tree = new EntropyDecisionTree<Integer, Integer>(subTrainInstances, 0.05);
 		//	DecisionTree<Integer, Integer> tree = new RandomEntropyDecisionTree<Integer, Integer>(subTrainInstances, 0.15, 100);
 		//	DecisionTree<Integer, Integer> tree = new RandomDecisionTree<Integer, Integer>(subTrainInstances, 0.5);
-		//	RandomForest<Integer, Integer> forest = new ExtremelyRandomForest<Integer, Integer>(subTrainInstances, 0.5, 61);
-		//	RandomForest<Integer, Integer> forest = new EntropyRandomForest<Integer, Integer>(subTrainInstances, 0.05, 40000, 61);
-			RandomForest<Integer, Integer> forest = new ExtraRandomForest<Integer, Integer>(subTrainInstances, 0.15, 60000, 61);
+		//	Forest<Integer, Integer> forest = new ExtremelyRandomForest<Integer, Integer>(subTrainInstances, 0.5, 61);
+		//	Forest<Integer, Integer> forest = new BaggedTrees<Integer, Integer>(subTrainInstances, 0.05, 40000, 61);
+			Forest<Integer, Integer> forest = new RandomForest<Integer, Integer>(subTrainInstances, 0.15, 60000, 61);
 			System.out.println("Training complete (" + (System.currentTimeMillis() - startTime) + " milliseconds)");
 		//	tree.printStats();
 			forest.printStats();

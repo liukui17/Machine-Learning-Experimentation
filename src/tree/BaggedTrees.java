@@ -5,11 +5,11 @@ import java.util.List;
 import data.Instance;
 import data.Utils;
 
-public class EntropyRandomForest<A, L> extends RandomForest<A, L> {
+public class BaggedTrees<A, L> extends Forest<A, L> {
 	
 	public static final int DEFAULT_SUBSET_RATIO = 2;
 
-	public EntropyRandomForest(List<Instance<A, L>> trainingExamples, double significanceThreshold, int subsetSize, int committeeSize) {
+	public BaggedTrees(List<Instance<A, L>> trainingExamples, double significanceThreshold, int subsetSize, int committeeSize) {
 		super(trainingExamples, subsetSize, committeeSize);
 		int totalHeights = 0;
 		int totalLeaves = 0;
@@ -26,7 +26,7 @@ public class EntropyRandomForest<A, L> extends RandomForest<A, L> {
 		updateAverages(totalHeights, totalLeaves);
 	}
 
-	public EntropyRandomForest(List<List<Instance<A, L>>> trainingSets, double significanceThreshold) {
+	public BaggedTrees(List<List<Instance<A, L>>> trainingSets, double significanceThreshold) {
 		super(trainingSets);
 		int totalHeights = 0;
 		int totalLeaves = 0;
@@ -43,7 +43,7 @@ public class EntropyRandomForest<A, L> extends RandomForest<A, L> {
 		updateAverages(totalHeights, totalLeaves);
 	}
 	
-	public EntropyRandomForest(List<Instance<A, L>> trainingExamples, double significanceThreshold, int committeeSize) {
+	public BaggedTrees(List<Instance<A, L>> trainingExamples, double significanceThreshold, int committeeSize) {
 		this(trainingExamples, significanceThreshold, trainingExamples.size() / DEFAULT_SUBSET_RATIO, committeeSize);
 	}
 }

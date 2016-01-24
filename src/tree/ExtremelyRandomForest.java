@@ -6,9 +6,9 @@ import data.Instance;
 import data.Utils;
 
 /**
- * This is a subclass of RandomForest. It builds a forest of RandomDecisionTrees.
+ * This is a subclass of Forest. It builds a forest of RandomDecisionTrees.
  */
-public class ExtremelyRandomForest<A, L> extends RandomForest<A, L> {
+public class ExtremelyRandomForest<A, L> extends Forest<A, L> {
 
 	public ExtremelyRandomForest(List<Instance<A, L>> trainingExamples, double significanceThreshold, int subsetSize, int committeeSize) {
 		super(trainingExamples, subsetSize, committeeSize);
