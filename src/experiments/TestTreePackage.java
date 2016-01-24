@@ -93,9 +93,9 @@ public class TestTreePackage {
 		//	DecisionTree<Integer, Integer> tree = new EntropyDecisionTree<Integer, Integer>(subTrainInstances, 0.05);
 		//	DecisionTree<Integer, Integer> tree = new RandomEntropyDecisionTree<Integer, Integer>(subTrainInstances, 0.15, 100);
 		//	DecisionTree<Integer, Integer> tree = new RandomDecisionTree<Integer, Integer>(subTrainInstances, 0.5);
-		//	Forest<Integer, Integer> forest = new ExtremelyRandomForest<Integer, Integer>(subTrainInstances, 0.5, 61);
+		//	Forest<Integer, Integer> forest = new ExtremelyRandomForest<Integer, Integer>(subTrainInstances, 0.8, 61);
 		//	Forest<Integer, Integer> forest = new BaggedTrees<Integer, Integer>(subTrainInstances, 0.05, 40000, 61);
-			Forest<Integer, Integer> forest = new RandomForest<Integer, Integer>(subTrainInstances, 0.15, 60000, 61);
+			Forest<Integer, Integer> forest = new RandomForest<Integer, Integer>(subTrainInstances, 1.0, 60000, 61);
 			System.out.println("Training complete (" + (System.currentTimeMillis() - startTime) + " milliseconds)");
 		//	tree.printStats();
 			forest.printStats();

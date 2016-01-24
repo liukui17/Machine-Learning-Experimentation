@@ -13,6 +13,11 @@ import data.Instance;
  * splitting attribute by random selection, splitting until there
  * is no longer any utility in splitting (for now, this is just
  * when the propagated subsets becomes pure in their labels).
+ * 
+ * NOTE: Using chi-squared split stopping on this drastically reduces
+ * classification accuracy, which makes sense since these trees
+ * tend to learn random rules that just split the training data. These
+ * trees have little to no generalization power.
  */
 public class RandomDecisionTree<A, L> extends DecisionTree<A, L> {
 
@@ -68,7 +73,7 @@ public class RandomDecisionTree<A, L> extends DecisionTree<A, L> {
 					this.splitAttribute = random.nextInt(dimensionality);
 					Map<A, Map<L, List<Instance<A, L>>>> partitionedSubsets = partition(this.splitAttribute,
 							trainingSubset);
-					if (isStatisticallySignificant(trainingSubset, partitionedSubsets)) {
+				//	if (isStatisticallySignificant(trainingSubset, partitionedSubsets)) {
 						children = new HashMap<A, DecisionNode>(partitionedSubsets.size(), (float) 1.0);
 						Iterator<A> iter = partitionedSubsets.keySet().iterator();
 						while (iter.hasNext()) {
@@ -76,7 +81,7 @@ public class RandomDecisionTree<A, L> extends DecisionTree<A, L> {
 							Map<L, List<Instance<A, L>>> nextSubset = partitionedSubsets.get(next);
 							children.put(next, new DecisionNode(nextSubset, depth));
 						}
-					}
+				//	}
 				}
 				
 				/*
