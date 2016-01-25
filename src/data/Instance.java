@@ -7,11 +7,17 @@ public class Instance<A,L> {
 	List<A> attributeValues;
 	L label;
 	int dimensionality;
+	double weight;
 	
-	public Instance(List<A> attributeValues, L label) {
+	public Instance(List<A> attributeValues, L label, double weight) {
 		this.attributeValues = attributeValues;
 		this.label = label;
+		this.weight = weight;
 		this.dimensionality = this.attributeValues.size();
+	}
+	
+	public Instance(List<A> attributeValues, L label) {
+		this(attributeValues, label, 1.0);
 	}
 	
 	public Instance(int size, L label) {
@@ -21,7 +27,7 @@ public class Instance<A,L> {
 	}
 	
 	public void setAttributeValue(int index, A attributeValue) {
-		assert(index >=0 && index < attributeValues.size());
+		assert(index >= 0 && index < attributeValues.size());
 		attributeValues.set(index, attributeValue);
 	}
 	
