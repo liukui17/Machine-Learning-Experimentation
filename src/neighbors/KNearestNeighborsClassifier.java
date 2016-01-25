@@ -31,6 +31,12 @@ public class KNearestNeighborsClassifier<L> {
 		}
 	}
 	
+	public KNearestNeighborsClassifier(Map<L, List<Instance<Integer, L>>> instances, int k, int n) {
+		this.k = k;
+		this.n = n;
+		this.instances = instances;
+	}
+	
 /*	public double computeConditionalAttributeValue(int attributeIndex, Number thisValue, L label) {
 		double numInstancesWithValue = 0.0;
 		double numInstancesWithValueAndLabel = 0.0;
