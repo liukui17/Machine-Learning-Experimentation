@@ -20,7 +20,7 @@ public class TestKNNTrees {
 		List<Instance<Integer, Integer>> testInstances = MNISTParser.makeInstances(testImages, testLabels, 0,
 				testImages.size());
 		
-		List<Instance<Integer, Integer>> subTrainInstances = Utils.makeSubset(trainInstances, 40000);
+		List<Instance<Integer, Integer>> subTrainInstances = Utils.makeSubset(trainInstances, 60000);
 
 		/*
 		 * Allow the garbage collector to free up some space on the heap since
@@ -32,8 +32,8 @@ public class TestKNNTrees {
 		testLabels = null;
 		
 		long start = System.currentTimeMillis();
-	//	KNNDecisionTree<Integer> classifier = new KNNDecisionTree<Integer>(subTrainInstances, 100, 0.000001, 2, 10);
-		KNNRandomForest<Integer> classifier = new KNNRandomForest<Integer>(trainInstances, 61, 0.00001, 2, 10);
+		KNNDecisionTree<Integer> classifier = new KNNDecisionTree<Integer>(subTrainInstances, 100, 0.000001, 2, 10);
+	//	KNNRandomForest<Integer> classifier = new KNNRandomForest<Integer>(trainInstances, 61, 0.00001, 2, 10);
 		System.out.println("Training complete (" + (System.currentTimeMillis() - start) + " milliseconds)");
 		
 		int correct = 0;

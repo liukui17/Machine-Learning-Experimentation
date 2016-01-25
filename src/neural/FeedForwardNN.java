@@ -1,14 +1,19 @@
 package neural;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import data.Instance;
+import data.Utils;
 
 public class FeedForwardNN<L> {
 	
 	double learningRate = 0.002;
+	
+	List<L> indexToLabel;
 	
 	List<List<NonLinearUnit>> layers;
 	
@@ -16,9 +21,10 @@ public class FeedForwardNN<L> {
 	
 	int dimensionality;
 	
-	public FeedForwardNN(List<Instance<Integer, L>> trainingExamples, int[] layerSizes) {
+	public FeedForwardNN(List<Instance<Integer, L>> trainingExamples, List<L> indexToLabel, int[] layerSizes) {
 		this.trainingExamples = trainingExamples;
 		dimensionality = trainingExamples.get(0).getDimensionality();
+		this.indexToLabel = indexToLabel;
 		
 		layers = new ArrayList<List<NonLinearUnit>>(layerSizes.length);
 		List<NonLinearUnit> inputLayer = new ArrayList<NonLinearUnit>(layerSizes[0]);
@@ -32,6 +38,32 @@ public class FeedForwardNN<L> {
 			}
 			layers.add(nextLayer);
 		}
+	}
+	
+	public L predict(List<Integer> newData) {
+		double[] inputs = new double[newData.size()];
+		for (int i = 0; i < newData.size(); i++) {
+			inputs[i] = newData.get(i);
+		}
+		Map<L, Double> outputs = getOutputs(inputs);
+		return Utils.getHighestScorer(outputs);
+	}
+	
+	private Map<L, Double> getOutputs(double[] newData) {
+		Map<L, Double> outputs = new HashMap<L, Double>();
+		double[] currentLayerInputs = newData;
+		for (int i = 0; i < layers.size(); i++) {
+			List<NonLinearUnit> nextLayer = layers.get(i);
+			double[] newLayerOutputs = new double[nextLayer.size()];
+			for (int j = 0; j < newLayerOutputs.length; j++) {
+				newLayerOutputs[j] = nextLayer.get(i).output(currentLayerInputs);
+			}
+			currentLayerInputs = newLayerOutputs;
+		}
+		for (int i = 0; i < currentLayerInputs.length; i++) {
+			outputs.put(indexToLabel.get(i), currentLayerInputs[i]);
+		}
+		return outputs;
 	}
 	
 	/**
