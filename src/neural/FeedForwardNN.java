@@ -45,12 +45,15 @@ public class FeedForwardNN<L> {
 		for (int i = 0; i < newData.size(); i++) {
 			inputs[i] = newData.get(i);
 		}
-		Map<L, Double> outputs = getOutputs(inputs);
-		return Utils.getHighestScorer(outputs);
+		double[] outputs = getOutputs(inputs);
+		Map<L, Double> labelOutputMap = new HashMap<L, Double>();
+		for (int i = 0; i < outputs.length; i++) {
+			labelOutputMap.put(indexToLabel.get(i), outputs[i]);
+		}
+		return Utils.getHighestScorer(labelOutputMap);
 	}
 	
-	private Map<L, Double> getOutputs(double[] newData) {
-		Map<L, Double> outputs = new HashMap<L, Double>();
+	private double[] getOutputs(double[] newData) {
 		double[] currentLayerInputs = newData;
 		for (int i = 0; i < layers.size(); i++) {
 			List<NonLinearUnit> nextLayer = layers.get(i);
@@ -60,10 +63,7 @@ public class FeedForwardNN<L> {
 			}
 			currentLayerInputs = newLayerOutputs;
 		}
-		for (int i = 0; i < currentLayerInputs.length; i++) {
-			outputs.put(indexToLabel.get(i), currentLayerInputs[i]);
-		}
-		return outputs;
+		return currentLayerInputs;
 	}
 	
 	/**
