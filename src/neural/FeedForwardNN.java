@@ -87,15 +87,16 @@ public class FeedForwardNN<L> {
 		
 		public NonLinearUnit(int inputSize) {
 			weights = new double[inputSize + 1];
+			initializeRandomWeights();
 		}
 		
 		public void initializeRandomWeights() {
 			Random random = new Random();
 			for (int i = 0; i < weights.length; i++) {
 				if (random.nextBoolean()) {
-					weights[i] = random.nextDouble();
+					weights[i] = random.nextDouble() / 20;
 				} else {
-					weights[i] = -random.nextDouble();
+					weights[i] = -random.nextDouble() / 20;
 				}
 			}
 		}
