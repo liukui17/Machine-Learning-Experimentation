@@ -234,4 +234,11 @@ public class Utils {
 			return 0.0;
 		}
 	}
+	
+	/**
+	 * computes smooth approximation to rectified linear unit
+	 */
+	public static double softplus(double input) {
+		return Math.log(1 + Math.exp(input));
+	}
 }
