@@ -29,12 +29,16 @@ public class FeedForwardNN<L> {
 		layers = new ArrayList<List<NonLinearUnit>>(layerSizes.length);
 		List<NonLinearUnit> inputLayer = new ArrayList<NonLinearUnit>(layerSizes[0]);
 		for (int i = 0; i < layerSizes[0]; i++) {
-			inputLayer.add(new NonLinearUnit(dimensionality));
+			inputLayer.add(new SigmoidUnit(dimensionality));
+		//	inputLayer.add(new TanhUnit(dimensionality));
+		//	inputLayer.add(new RectifiedLinearUnit(dimensionality));
 		}
 		for (int i = 1; i < layerSizes.length; i++) {
 			List<NonLinearUnit> nextLayer = new ArrayList<NonLinearUnit>(layerSizes[i]);
 			for (int j = 0; j < layerSizes[i]; j++) {
-				nextLayer.add(new NonLinearUnit(layers.get(i - 1).size()));
+				nextLayer.add(new SigmoidUnit(layers.get(i - 1).size()));
+			//	nextLayer.add(new TanhUnit(layers.get(i - 1).size()));
+			//	nextLayer.add(new RectifiedLinearUnit(layers.get(i - 1).size()));
 			}
 			layers.add(nextLayer);
 		}
@@ -66,50 +70,7 @@ public class FeedForwardNN<L> {
 		return currentLayerInputs;
 	}
 	
-	/**
-	 * compute sigmoid of some input
-	 */
-	public double sigmoid(double input) {
-		return 1.0 / (1.0 + Math.exp(-input));
-	}
-	
-	/**
-	 * compute derivative of sigmoid at input
-	 */
-	public double dSigmoid(double input) {
-		double sig = sigmoid(input);
-		return sig * (1.0 - sig);
-	}
-	
-	private class NonLinearUnit {
+	public void train() {
 		
-		double[] weights;
-		
-		public NonLinearUnit(int inputSize) {
-			weights = new double[inputSize + 1];
-		}
-		
-		public void initializeRandomWeights() {
-			Random random = new Random();
-			for (int i = 0; i < weights.length; i++) {
-				if (random.nextBoolean()) {
-					weights[i] = random.nextDouble();
-				} else {
-					weights[i] = -random.nextDouble();
-				}
-			}
-		}
-		
-		public double output(double[] data) {
-			return sigmoid(computeLinearOutput(data));
-		}
-		
-		public double computeLinearOutput(double[] data) {
-			double res = weights[0];
-			for (int i = 0; i < data.length; i++) {
-				res += weights[i + 1] * data[i];
-			}
-			return res;
-		}
 	}
 }

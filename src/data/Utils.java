@@ -200,4 +200,38 @@ public class Utils {
 		}
 		return best;
 	}
+	
+	/**
+	 * compute sigmoid of some input
+	 */
+	public static double sigmoid(double input) {
+		return 1.0 / (1.0 + Math.exp(-input));
+	}
+	
+	/**
+	 * compute derivative of sigmoid at input
+	 */
+	public static double dSigmoid(double input) {
+		double sig = sigmoid(input);
+		return sig * (1.0 - sig);
+	}
+	
+	/**
+	 * compute derivative of hyperbolic tangent at input
+	 */
+	public static double dTanh(double input) {
+		return 1 - Math.pow(Math.tanh(input), 2.0);
+	}
+	
+	public static double rectifiedLinear(double input, double threshold) {
+		return Math.max(threshold, input);
+	}
+	
+	public static double dRectifiedLinear(double input, double threshold) {
+		if (input > threshold) {
+			return 1.0;
+		} else {
+			return 0.0;
+		}
+	}
 }
