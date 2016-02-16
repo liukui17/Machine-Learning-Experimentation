@@ -2,7 +2,7 @@ package neural;
 
 public abstract class NonLinearUnit {
 	
-	double[] weights;
+	private double[] weights;
 	
 	public NonLinearUnit(int inputSize) {
 		weights = new double[inputSize + 1];
@@ -22,5 +22,23 @@ public abstract class NonLinearUnit {
 			res += weights[i + 1] * data[i];
 		}
 		return res;
+	}
+	
+	public double[] getWeights() {
+		return weights;
+	}
+	
+	public int getWeightLength() {
+		return weights.length;
+	}
+	
+	public double getWeight(int index) {
+		assert(index >= 0 && index < weights.length);
+		return weights[index];
+	}
+	
+	public void updateWeight(int index, double weight) {
+		assert(index >= 0 && index < weights.length);
+		weights[index] = weight;
 	}
 }

@@ -4,7 +4,7 @@ import data.Utils;
 
 public class RectifiedLinearUnit extends NonLinearUnit {
 	
-	double threshold;
+	private double threshold;
 	
 	public RectifiedLinearUnit(int inputSize) {
 		this(inputSize, 0.0);
